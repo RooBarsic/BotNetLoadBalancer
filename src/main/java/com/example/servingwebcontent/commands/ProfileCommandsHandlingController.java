@@ -21,7 +21,7 @@ public class ProfileCommandsHandlingController{
 
     @Autowired
     ProfileCommandsHandlingController(TokenStorage tokenStorage) {
-        final String appUrl = tokenStorage.getTokens("APP_HEROKU_URL") + ":" + tokenStorage.getTokens("SERVER_PORT");
+        final String appUrl = tokenStorage.getTokens("APP_HEROKU_URL");
         TELEGRAM_RESPONSE_CONTROLLER = appUrl + "/send/telegram";
     }
 

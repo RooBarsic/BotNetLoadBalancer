@@ -20,7 +20,7 @@ public class BotNetRequestParser {
 
     @Autowired
     BotNetRequestParser(TokenStorage tokenStorage) {
-        final String appUrl = tokenStorage.getTokens("APP_HEROKU_URL") + ":" + tokenStorage.getTokens("SERVER_PORT");
+        final String appUrl = tokenStorage.getTokens("APP_HEROKU_URL");
         START_COMMAND_REST_CONTROLLER = appUrl + "/command/start";
         HELP_COMMAND_REST_CONTROLLER = appUrl + "/command/help";
         FEEDBACK_COMMAND_REST_CONTROLLER = appUrl + "/command/feedback";
