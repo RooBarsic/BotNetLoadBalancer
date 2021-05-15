@@ -50,11 +50,4 @@ public class NotifyServiceDemon {
             }
         }
     }
-
-    @Scheduled(fixedDelay = 60000)
-    public void doRequestToNotDie() {
-        System.out.println("doing request to google.com");
-        BotNetUtils.httpsGETRequest("https://www.google.com/");
-        System.out.println("finished request to google.com for not dieing");
-    }
 }

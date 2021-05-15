@@ -19,7 +19,7 @@ public class RequestProviderRestController {
 
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     public String helloGET() {
-        System.out.println("Got GET");
+        System.out.println("Got Hello request");
         return "greeting";
     }
 
