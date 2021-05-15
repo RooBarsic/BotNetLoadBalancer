@@ -39,6 +39,7 @@ public class TokenStorage {
     TokenStorage() {
         System.out.println(" ---- reading tokens ");
         addTokens();
+        showTokens();
     }
 
 
