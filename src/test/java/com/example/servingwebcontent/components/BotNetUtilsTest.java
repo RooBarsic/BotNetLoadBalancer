@@ -69,6 +69,8 @@ public class BotNetUtilsTest {
 
         //testing GET request
         String receivedData = BotNetUtils.httpsGETRequest(url);
+        System.out.println("receivedData = " + receivedData);
+        System.out.println("getResponseData = " + getResponseData);
         assertEquals(receivedData, getResponseData);
 
         //testing POST request
