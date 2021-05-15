@@ -16,6 +16,7 @@ public class BotNetResponse {
     private String message;
     private List<List<BotNetButton>> buttonsMatrix;
     private List<BotNetFile> filesList;
+    private boolean inlineButtons;
 
     public BotNetResponse() {
         buttonsMatrix = new LinkedList<>();
@@ -79,4 +80,14 @@ public class BotNetResponse {
     public void clearFiles() {
         filesList.clear();
     }
+
+
+    public boolean isInlineButtons() {
+        return inlineButtons;
+    }
+
+    public void setInlineButtons(boolean inlineButtons) {
+        this.inlineButtons = inlineButtons;
+    }
+
 }
