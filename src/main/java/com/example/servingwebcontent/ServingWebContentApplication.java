@@ -1,5 +1,6 @@
 package com.example.servingwebcontent;
 
+import com.example.servingwebcontent.components.TokenStorage;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -17,7 +18,9 @@ public class ServingWebContentApplication {
         if (args[0].equals("-web")) {
             SpringApplication.run(ServingWebContentApplication.class, args);
         } else {
-            final String helloUrl = "https://vious.herokuapp.com/hello";
+            TokenStorage tokenStorage = new TokenStorage();
+            tokenStorage.addTokens();
+            final String helloUrl = tokenStorage.getTokens("APP_HEROKU_URL") + "/hello";
             while (true) {
                 System.out.println("Health checking:: Doing health check from additional worker to " + helloUrl);
                 String response = httpsGETRequest(helloUrl);
