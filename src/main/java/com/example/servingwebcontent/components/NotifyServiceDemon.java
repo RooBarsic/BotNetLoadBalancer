@@ -27,7 +27,7 @@ public class NotifyServiceDemon {
         this.hierarchy = hierarchy;
     }
 
-    @Scheduled(fixedDelay = 60 * 60000)
+    @Scheduled(fixedDelay = 1 * 60000)
     public void sendRemiders() {
         System.out.println("Started notify demon at " + new Date());
         final List<BotNetUser> users = hierarchy.getAllUsers();
