@@ -1,0 +1,34 @@
+req : /start or any request for first time
+resp: Hello. My name is Vious, I will help you to learn words, exam questions, anything you like.
+resp: Use command /add to add new word
+
+req: /add
+expect: memory card
+resp: Send me word and it's definition. Раздели вопрос от ответе используя символ '-'.
+        Например: Capital of Russia - Moscow
+
+
+
+
+learning :
+resp: Capital fo Russia
+    buttons : show | remove
+expect: show_answer
+req: show
+resp: Moscow
+        Did you learned this word ?
+    buttons : yes | no
+expected: rate
+
+
+about user
+User : botnet_id, telegram_id, telegram_login
+    words : [question, ans, number_of_repeats, next_asking_day], ......
+
+
+commands:
+/start
+/help
+/feedback
+/add
+/clear
