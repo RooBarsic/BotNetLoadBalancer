@@ -37,7 +37,7 @@ public class TokenStorage {
     private String AWS_DB_W3_ROOT_PASSWORD = "null";
     private String APP_HEROKU_URL = "null";
 
-    TokenStorage() {
+    public TokenStorage() {
         System.out.println(" ---- reading tokens ");
         addTokens();
         showTokens();
