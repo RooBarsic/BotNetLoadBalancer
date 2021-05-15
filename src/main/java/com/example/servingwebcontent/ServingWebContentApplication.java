@@ -19,8 +19,13 @@ public class ServingWebContentApplication {
         } else {
             final String helloUrl = "https://vious.herokuapp.com/hello";
             while (true) {
-                System.out.println("Doing health check from additional worker");
-                httpsGETRequest(helloUrl);
+                System.out.println("Health checking:: Doing health check from additional worker to " + helloUrl);
+                String response = httpsGETRequest(helloUrl);
+                if (response == null || response.equals("")) {
+                    System.out.println("Health checking:: response is null or empty");
+                } else {
+                    System.out.println("Health checking:: response is = " + response);
+                }
                 try {
                     Thread.sleep(60000);
                 } catch (InterruptedException e) {
