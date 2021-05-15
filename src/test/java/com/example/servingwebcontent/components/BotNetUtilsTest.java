@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class BotNetUtilsTest {
     private final int SERVER_PORT = 8081;
 
-    @Test
+    //@Test
     public void canMakeGetAndPostRequest() {
         final String getResponseData = "Hello BotNet World\r\n"; // used '\r\n' because last symbols in response would be like that
         final String postResponseData = "I got POSt request!!!`~~\r\n";
