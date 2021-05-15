@@ -8,6 +8,7 @@ import com.example.message.data.BotNetUser;
 import com.example.message.data.ExpectedData;
 import com.example.message.data.UserMemoryCard;
 import com.example.servingwebcontent.components.Hierarchy;
+import com.example.servingwebcontent.components.TokenStorage;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,13 @@ import org.springframework.web.bind.annotation.*;
 public class ProfileCommandsHandlingController{
     @Autowired
     private Hierarchy hierarchy;
-    protected final String TELEGRAM_RESPONSE_CONTROLLER = "http://localhost:8080/send/telegram";
+    private final String TELEGRAM_RESPONSE_CONTROLLER;
+
+    @Autowired
+    ProfileCommandsHandlingController(TokenStorage tokenStorage) {
+        final String appUrl = tokenStorage.getTokens("APP_HEROKU_URL") + ":" + tokenStorage.getTokens("SERVER_PORT");
+        TELEGRAM_RESPONSE_CONTROLLER = appUrl + "/send/telegram";
+    }
 
     @RequestMapping(value = "/command/profile/add-words", method = RequestMethod.POST)
     @ResponseBody

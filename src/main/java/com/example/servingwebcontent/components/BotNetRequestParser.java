@@ -3,21 +3,30 @@ package com.example.servingwebcontent.components;
 import com.example.BotNetUtils;
 import com.example.message.BotNetRequest;
 import com.google.gson.Gson;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 @Component
 public class BotNetRequestParser {
-    private final String START_COMMAND_REST_CONTROLLER = "http://localhost:8080/command/start";
-    private final String HELP_COMMAND_REST_CONTROLLER = "http://localhost:8080/command/help";
-    private final String FEEDBACK_COMMAND_REST_CONTROLLER = "http://localhost:8080/command/feedback";
-    private final String EMPTY_COMMAND_CONTROLLER = "http://localhost:8080/command/empty";
-    private final String ADD_WORDS_COMMAND_CONTROLLER = "http://localhost:8080/command/profile/add-words";
-    private final String SHOW_LAST_ASKED_WORD_COMMAND_CONTROLLER = "http://localhost:8080/command/profile/show";
+    private final String START_COMMAND_REST_CONTROLLER;
+    private final String HELP_COMMAND_REST_CONTROLLER;
+    private final String FEEDBACK_COMMAND_REST_CONTROLLER;
+    private final String EMPTY_COMMAND_CONTROLLER;
+    private final String ADD_WORDS_COMMAND_CONTROLLER;
+    private final String SHOW_LAST_ASKED_WORD_COMMAND_CONTROLLER;
     private final ConcurrentLinkedDeque<BotNetRequest> receivedRequestsQueue;
 
-    BotNetRequestParser() {
+    @Autowired
+    BotNetRequestParser(TokenStorage tokenStorage) {
+        final String appUrl = tokenStorage.getTokens("APP_HEROKU_URL") + ":" + tokenStorage.getTokens("SERVER_PORT");
+        START_COMMAND_REST_CONTROLLER = appUrl + "/command/start";
+        HELP_COMMAND_REST_CONTROLLER = appUrl + "/command/help";
+        FEEDBACK_COMMAND_REST_CONTROLLER = appUrl + "/command/feedback";
+        EMPTY_COMMAND_CONTROLLER = appUrl + "/command/empty";
+        ADD_WORDS_COMMAND_CONTROLLER = appUrl + "/command/profile/add-words";
+        SHOW_LAST_ASKED_WORD_COMMAND_CONTROLLER = appUrl + "/command/profile/show";
         receivedRequestsQueue = new ConcurrentLinkedDeque<>();
         startRequestsProcessing();
     }
