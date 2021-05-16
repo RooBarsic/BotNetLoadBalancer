@@ -17,6 +17,13 @@ public class RequestProviderRestController {
         this.telegramBot = telegramBot;
     }
 
+    @RequestMapping(value = "/hello", method = RequestMethod.GET)
+    public String helloGET() {
+        System.out.println("Got Hello request");
+        return "greeting";
+    }
+
+
     @RequestMapping(value = "/requests/telegram", method = RequestMethod.GET)
     @ResponseBody
     public String sendTelegramMessageGET(@RequestParam(name = "size", required = false, defaultValue = "10") int pageSize) {

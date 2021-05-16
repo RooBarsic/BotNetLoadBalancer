@@ -35,10 +35,12 @@ public class TokenStorage {
     private String AWS_DB_W3_URL = "null";
     private String AWS_DB_W3_ROOT_USER = "null";
     private String AWS_DB_W3_ROOT_PASSWORD = "null";
+    private String APP_HEROKU_URL = "null";
 
-    TokenStorage() {
+    public TokenStorage() {
         System.out.println(" ---- reading tokens ");
         addTokens();
+        showTokens();
     }
 
 
@@ -86,7 +88,8 @@ public class TokenStorage {
                         "TESTING_FACEBOOK_BOT_BASE_URL = " + TESTING_FACEBOOK_BOT_BASE_URL  + "\n" +
                         "AWS_DB_W3_URL = " + AWS_DB_W3_URL + "\n" +
                         "AWS_DB_W3_ROOT_USER = " + AWS_DB_W3_ROOT_USER + "\n" +
-                        "AWS_DB_W3_ROOT_PASSWORD = " + AWS_DB_W3_ROOT_PASSWORD + "\n\n");
+                        "AWS_DB_W3_ROOT_PASSWORD = " + AWS_DB_W3_ROOT_PASSWORD + "\n" +
+                        "APP_HEROKU_URL = " + APP_HEROKU_URL + "\n\n");
             }
             catch (FileNotFoundException e) {
                 System.out.println(" ----------- file not found ------------- ");
@@ -119,6 +122,8 @@ public class TokenStorage {
             AWS_DB_W3_URL = System.getenv("AWS_DB_W3_URL");
             AWS_DB_W3_ROOT_USER = System.getenv("AWS_DB_W3_ROOT_USER");
             AWS_DB_W3_ROOT_PASSWORD = System.getenv("AWS_DB_W3_ROOT_PASSWORD");
+
+            APP_HEROKU_URL = System.getenv("APP_HEROKU_URL");
 
         }
     }
@@ -176,6 +181,9 @@ public class TokenStorage {
                 break;
             case "AWS_DB_W3_ROOT_PASSWORD" :
                 AWS_DB_W3_ROOT_PASSWORD = tokenValue;
+                break;
+            case "APP_HEROKU_URL" :
+                APP_HEROKU_URL = tokenValue;
                 break;
         }
     }
@@ -236,6 +244,9 @@ public class TokenStorage {
             case "AWS_DB_W3_ROOT_PASSWORD" :
                 temp = AWS_DB_W3_ROOT_PASSWORD;
                 break;
+            case "APP_HEROKU_URL" :
+                temp = APP_HEROKU_URL;
+                break;
         }
         return temp;
     }
@@ -260,5 +271,7 @@ public class TokenStorage {
         System.out.println("token :::: AWS_DB_W3_URL = " + AWS_DB_W3_URL);
         System.out.println("token :::: AWS_DB_W3_ROOT_USER = " + AWS_DB_W3_ROOT_USER);
         System.out.println("token :::: AWS_DB_W3_ROOT_PASSWORD = " + AWS_DB_W3_ROOT_PASSWORD);
+
+        System.out.println("token :::: APP_HEROKU_URL = " + APP_HEROKU_URL);
     }
 }

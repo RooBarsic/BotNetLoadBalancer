@@ -19,15 +19,17 @@ import java.util.List;
 
 public class NotifyServiceDemon {
     private final Hierarchy hierarchy;
-    protected final String TELEGRAM_RESPONSE_CONTROLLER = "http://localhost:8080/send/telegram";
+    private final String TELEGRAM_RESPONSE_CONTROLLER;
 
     @Autowired
-    NotifyServiceDemon(Hierarchy hierarchy) {
+    NotifyServiceDemon(Hierarchy hierarchy, TokenStorage tokenStorage) {
+        final String appUrl = tokenStorage.getTokens("APP_HEROKU_URL");
+        TELEGRAM_RESPONSE_CONTROLLER = appUrl + "/send/telegram";
         System.out.println("Notify service component created");
         this.hierarchy = hierarchy;
     }
 
-    @Scheduled(fixedDelay = 60 * 60000)
+    @Scheduled(fixedDelay = 1 * 60000)
     public void sendRemiders() {
         System.out.println("Started notify demon at " + new Date());
         final List<BotNetUser> users = hierarchy.getAllUsers();

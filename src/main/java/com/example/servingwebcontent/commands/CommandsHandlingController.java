@@ -8,6 +8,7 @@ import com.example.message.data.BotNetButton;
 import com.example.message.data.ExpectedData;
 import com.example.message.data.UserMemoryCard;
 import com.example.servingwebcontent.components.Hierarchy;
+import com.example.servingwebcontent.components.TokenStorage;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +17,13 @@ import org.springframework.web.bind.annotation.*;
 public class CommandsHandlingController {
     @Autowired
     private Hierarchy hierarchy;
-    protected final String TELEGRAM_RESPONSE_CONTROLLER = "http://localhost:8080/send/telegram";
-/**
-/start
-/help
-/feedback
-/add
-/clear
-*/
+    private final String TELEGRAM_RESPONSE_CONTROLLER;
+
+    @Autowired
+    CommandsHandlingController(TokenStorage tokenStorage) {
+        final String appUrl = tokenStorage.getTokens("APP_HEROKU_URL");
+        TELEGRAM_RESPONSE_CONTROLLER = appUrl + "/send/telegram";
+    }
 
     @RequestMapping(value = "/command/start", method = RequestMethod.POST)
     @ResponseBody
@@ -42,6 +42,7 @@ public class CommandsHandlingController {
         response.setInlineButtons(true);
 
         final Gson jsonConverter = new Gson();
+        System.out.println("TELEGRAM_RESPONSE_CONTROLLER = " + TELEGRAM_RESPONSE_CONTROLLER);
         BotNetUtils.httpsPOSTRequest(TELEGRAM_RESPONSE_CONTROLLER, jsonConverter.toJson(response).getBytes());
 
         return "OK";
