@@ -4,5 +4,6 @@ public enum  ExpectedData {
     MEMORY_CARD,
     SHOW_ANSWER,
     RATE,
+    FEEDBACK,
     NONE
 }

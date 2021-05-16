@@ -16,7 +16,7 @@ public class BotNetResponse {
     private String message;
     private List<List<BotNetButton>> buttonsMatrix;
     private List<BotNetFile> filesList;
-    private boolean inlineButtons;
+    private boolean inlineButtons = true; // use inline buttons by default
 
     public BotNetResponse() {
         buttonsMatrix = new LinkedList<>();

@@ -55,6 +55,8 @@ public class UserMemoryCard {
         return numberOfAsking;
     }
 
+    public boolean isLearned() { return learned; }
+
     /**
      * @param rate expected to be 'yes' or 'no' if user learned or didn't learned the word
      * @return

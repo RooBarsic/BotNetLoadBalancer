@@ -2,6 +2,7 @@ package com.example.servingwebcontent;
 
 
 import com.example.message.BotNetResponse;
+import com.example.message.data.BotNetButton;
 import com.example.servingwebcontent.components.TelegramBot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -47,6 +48,15 @@ public class ResponseSenderRestController {
             responseStatus += "Error: No message to send\n";
         }
         if (responseStatus.length() == 0) {
+            if (!response.hasButtons()) {
+                response.addButton(new BotNetButton("add words", "/add-words"));
+                response.addButton(new BotNetButton("help", "/help"));
+                response.addButton(new BotNetButton("feedback", "/feedback"));
+                response.setNewButtonsLine();
+                response.addButton(new BotNetButton("statistics", "/statistics"));
+                response.setInlineButtons(true);
+            }
+
             telegramBot.getResponseSender()
                     .sendBotNetResponse(response);
             responseStatus += "OK";

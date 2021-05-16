@@ -2,6 +2,7 @@ package com.example.servingwebcontent.components;
 
 import com.example.BotNetUtils;
 import com.example.message.BotNetRequest;
+import com.example.message.data.ExpectedData;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,18 +17,25 @@ public class BotNetRequestParser {
     private final String EMPTY_COMMAND_CONTROLLER;
     private final String ADD_WORDS_COMMAND_CONTROLLER;
     private final String SHOW_LAST_ASKED_WORD_COMMAND_CONTROLLER;
+    private final String RATE_LAST_ASKED_WORD_COMMAND_CONTROLLER;
+    private final String STATISTICS_COMMAND_CONTROLLER;
     private final ConcurrentLinkedDeque<BotNetRequest> receivedRequestsQueue;
+    private final Hierarchy hierarchy;
 
     @Autowired
-    BotNetRequestParser(TokenStorage tokenStorage) {
+    BotNetRequestParser(TokenStorage tokenStorage, Hierarchy hierarchy) {
         final String appUrl = tokenStorage.getTokens("APP_HEROKU_URL");
         START_COMMAND_REST_CONTROLLER = appUrl + "/command/start";
         HELP_COMMAND_REST_CONTROLLER = appUrl + "/command/help";
-        FEEDBACK_COMMAND_REST_CONTROLLER = appUrl + "/command/feedback";
         EMPTY_COMMAND_CONTROLLER = appUrl + "/command/empty";
         ADD_WORDS_COMMAND_CONTROLLER = appUrl + "/command/profile/add-words";
         SHOW_LAST_ASKED_WORD_COMMAND_CONTROLLER = appUrl + "/command/profile/show";
+        RATE_LAST_ASKED_WORD_COMMAND_CONTROLLER = appUrl + "/command/profile/rate";
+        FEEDBACK_COMMAND_REST_CONTROLLER = appUrl + "/command/profile/feedback";
+        STATISTICS_COMMAND_CONTROLLER = appUrl + "/command/profile/statistics";
         receivedRequestsQueue = new ConcurrentLinkedDeque<>();
+        this.hierarchy = hierarchy;
+
         startRequestsProcessing();
     }
 
@@ -53,6 +61,7 @@ public class BotNetRequestParser {
 
                     //find controller url for requested command
                     final String commandRestController;
+                    final ExpectedData expectedData = hierarchy.getOrCreateUserByTelegramId(request.getUserChatId()).getExpectedData();
                     if (request.getMessage().startsWith("/start")) {
                         commandRestController = START_COMMAND_REST_CONTROLLER;
                     }
@@ -68,8 +77,26 @@ public class BotNetRequestParser {
                     else if (request.getMessage().startsWith("/show")) {
                         commandRestController = SHOW_LAST_ASKED_WORD_COMMAND_CONTROLLER;
                     }
+                    else if (request.getMessage().startsWith("/statistics")) {
+                        commandRestController = STATISTICS_COMMAND_CONTROLLER;
+                    }
                     else {
-                        commandRestController = EMPTY_COMMAND_CONTROLLER;
+                        switch (expectedData) {
+                            case FEEDBACK:
+                                commandRestController = FEEDBACK_COMMAND_REST_CONTROLLER;
+                                break;
+                            case MEMORY_CARD:
+                                commandRestController = ADD_WORDS_COMMAND_CONTROLLER;
+                                break;
+                            case RATE:
+                                commandRestController = RATE_LAST_ASKED_WORD_COMMAND_CONTROLLER;
+                                break;
+                            case SHOW_ANSWER:
+                                commandRestController = SHOW_LAST_ASKED_WORD_COMMAND_CONTROLLER;
+                                break;
+                            default:
+                                commandRestController = EMPTY_COMMAND_CONTROLLER;
+                        }
                     }
 
                     BotNetUtils.httpsPOSTRequest(commandRestController, jsonConverter.toJson(request).getBytes());
