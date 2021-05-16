@@ -36,8 +36,8 @@ public class CommandsHandlingController {
         final BotNetResponse response = new BotNetResponse();
         response.setReceiverChatId(request.getUserChatId());
 
-        response.setMessage("Salam. My name is Vious, I will help you to learn words, exam questions, anything you like.\n" +
-                "Use command /add to add new word");
+        response.setMessage("Salam. My name is Vious, I will help you to learn words, exam questions, anything you would like.\n" +
+                "Use command /add-words to add new word");
 
         final Gson jsonConverter = new Gson();
         System.out.println("TELEGRAM_RESPONSE_CONTROLLER = " + TELEGRAM_RESPONSE_CONTROLLER);
@@ -58,8 +58,9 @@ public class CommandsHandlingController {
         response.setReceiverChatId(request.getUserChatId());
 
         response.setMessage("/start - it's start command\n" +
-                "/help - use to get some help\n" +
-                "/feedback - use to write feedback");
+                "/help - use to get some help info\n" +
+                "/feedback - use to write feedback\n" +
+                "/statistics - to see your learning progress");
 
         final Gson jsonConverter = new Gson();
         BotNetUtils.httpsPOSTRequest(TELEGRAM_RESPONSE_CONTROLLER, jsonConverter.toJson(response).getBytes());

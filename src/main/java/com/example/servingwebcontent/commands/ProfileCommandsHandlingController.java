@@ -60,8 +60,8 @@ public class ProfileCommandsHandlingController{
         } else {
             if (hierarchy.getUserByTelegramId(request.getUserChatId()).hasSpaceForNewMemoryCard()) {
                 response.setMessage("Send me word and it's definition. \n" +
-                        "Раздели вопрос от ответе используя символ '-'.\n" +
-                        "Например: Capital of Russia - Moscow;");
+                        "Separate the question from the answer using dash '-'.\n" +
+                        "Example: Capital of Russia - Moscow;");
             } else {
                 response.setMessage("Sorry. You already reached your limits.\nPlease remove some words.");
             }
