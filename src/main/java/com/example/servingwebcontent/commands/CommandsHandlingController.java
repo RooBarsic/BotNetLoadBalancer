@@ -62,6 +62,7 @@ public class CommandsHandlingController {
         response.setReceiverChatId(request.getUserChatId());
 
         response.setMessage("/start - it's start command\n" +
+                "/add-words - to add words\n" +
                 "/help - use to get some help info\n" +
                 "/feedback - use to write feedback\n" +
                 "/statistics - to see your learning progress");
