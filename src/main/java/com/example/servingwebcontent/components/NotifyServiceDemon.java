@@ -28,7 +28,7 @@ public class NotifyServiceDemon {
         this.hierarchy = hierarchy;
     }
 
-    @Scheduled(fixedDelay = 6 * 60 * 60000)
+    @Scheduled(fixedDelay = 1 * 30000)
     public void sendRemiders() {
         final Date notifyStartingDate = new Date();
         final Gson jsonConverter = new Gson();
