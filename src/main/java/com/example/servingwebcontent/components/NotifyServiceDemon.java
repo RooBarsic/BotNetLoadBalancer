@@ -28,7 +28,7 @@ public class NotifyServiceDemon {
         this.hierarchy = hierarchy;
     }
 
-    @Scheduled(fixedDelay = 1 * 30000)
+    @Scheduled(fixedDelay = 6 * 60 * 60000)
     public void sendRemiders() {
         final Date notifyStartingDate = new Date();
         final Gson jsonConverter = new Gson();
@@ -49,10 +49,10 @@ public class NotifyServiceDemon {
 
                     final BotNetResponse response = new BotNetResponse();
                     response.setReceiverChatId(user.getTelegramId());
-                    response.setMessage("It's time to learn word:\n" + memoryCard.getQuestion());
+                    response.setMessage("It's time to learn word:\n" + memoryCard.getQuestion() + "\n\n" +
+                            "/show");
                     response.addButton(new BotNetButton("show answer", "/show"));
                     user.setExpectedData(ExpectedData.SHOW_ANSWER);
-                    response.setInlineButtons(true);
 
                     BotNetUtils.httpsPOSTRequest(TELEGRAM_RESPONSE_CONTROLLER, jsonConverter.toJson(response).getBytes());
                 }

@@ -59,9 +59,9 @@ public class ProfileCommandsHandlingController{
                     .setExpectedData(ExpectedData.NONE);
         } else {
             if (hierarchy.getUserByTelegramId(request.getUserChatId()).hasSpaceForNewMemoryCard()) {
-                response.setMessage("Send me word and it's definition. \n" +
+                response.setMessage("Send me word and it's definition. \n\n" +
                         "Separate the question from the answer using dash '-'.\n" +
-                        "Example: Capital of Russia - Moscow;" +
+                        "Example: Capital of Russia - Moscow;\n\n" +
                         "You can send as many words in one message as you want!");
             } else {
                 response.setMessage("Sorry. You already reached your limits.\nPlease remove some words.");
