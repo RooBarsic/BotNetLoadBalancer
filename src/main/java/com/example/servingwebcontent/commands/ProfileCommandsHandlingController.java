@@ -91,12 +91,12 @@ public class ProfileCommandsHandlingController{
             response.addButton(new BotNetButton("yes", "yes"));
             response.addButton(new BotNetButton("no", "no"));
             response.setInlineButtons(true);
+
+            hierarchy.getUserToUpdateByTelegramId(request.getUserChatId())
+                    .setExpectedData(ExpectedData.RATE);
         } else {
             response.setMessage("You has no saved words.");
         }
-
-        hierarchy.getUserToUpdateByTelegramId(request.getUserChatId())
-                .setExpectedData(ExpectedData.RATE);
 
         final Gson jsonConverter = new Gson();
         BotNetUtils.httpsPOSTRequest(TELEGRAM_RESPONSE_CONTROLLER, jsonConverter.toJson(response).getBytes());
@@ -141,6 +141,8 @@ public class ProfileCommandsHandlingController{
         System.out.println("USER_COMMAND: /statistics form : " + request.getUserChatId());
 
         final BotNetUser user = hierarchy.getOrCreateUserByTelegramId(request.getUserChatId());
+        hierarchy.getUserToUpdateByTelegramId(request.getUserChatId())
+                .setExpectedData(ExpectedData.NONE);
         final BotNetResponse response = new BotNetResponse();
         final Gson jsonConverter = new Gson();
         response.setReceiverChatId(request.getUserChatId());

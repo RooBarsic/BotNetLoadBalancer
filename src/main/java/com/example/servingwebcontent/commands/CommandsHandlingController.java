@@ -32,6 +32,8 @@ public class CommandsHandlingController {
         System.out.println("GLOBAL_COMMAND: /start form : " + request.getUserChatId());
 
         hierarchy.getOrCreateUserByTelegramId(request.getUserChatId());
+        hierarchy.getUserToUpdateByTelegramId(request.getUserChatId())
+                .setExpectedData(ExpectedData.NONE);
 
         final BotNetResponse response = new BotNetResponse();
         response.setReceiverChatId(request.getUserChatId());
@@ -53,6 +55,8 @@ public class CommandsHandlingController {
         System.out.println("GLOBAL_COMMAND: /help form : " + request.getUserChatId());
 
         hierarchy.getOrCreateUserByTelegramId(request.getUserChatId());
+        hierarchy.getUserToUpdateByTelegramId(request.getUserChatId())
+                .setExpectedData(ExpectedData.NONE);
 
         final BotNetResponse response = new BotNetResponse();
         response.setReceiverChatId(request.getUserChatId());
@@ -79,6 +83,8 @@ public class CommandsHandlingController {
         response.setMessage("No data expected :(");
 
         hierarchy.getOrCreateUserByTelegramId(request.getUserChatId());
+        hierarchy.getUserToUpdateByTelegramId(request.getUserChatId())
+                .setExpectedData(ExpectedData.NONE);
 
         final Gson jsonConverter = new Gson();
         BotNetUtils.httpsPOSTRequest(TELEGRAM_RESPONSE_CONTROLLER, jsonConverter.toJson(response).getBytes());
