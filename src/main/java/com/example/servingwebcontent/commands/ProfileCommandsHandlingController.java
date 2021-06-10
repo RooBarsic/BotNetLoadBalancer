@@ -87,8 +87,8 @@ public class ProfileCommandsHandlingController{
         response.setReceiverChatId(request.getUserChatId());
         if (hierarchy.getOrCreateUserByTelegramId(request.getUserChatId()).hasMemoryCards()) {
             final UserMemoryCard memoryCard = hierarchy.getOrCreateUserByTelegramId(request.getUserChatId()).peekTopMemoryCard();
-            response.setMessage("Answer: " + memoryCard.getAnswer() +
-                    "\nDid you learned that answer ?");
+            response.setMessage("Answer: \n\n" + memoryCard.getAnswer() +
+                    "\n\nDid you learned that answer ?");
             response.addButton(new BotNetButton("yes", "yes"));
             response.addButton(new BotNetButton("no", "no"));
             response.setInlineButtons(true);

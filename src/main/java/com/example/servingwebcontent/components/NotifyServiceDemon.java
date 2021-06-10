@@ -28,7 +28,7 @@ public class NotifyServiceDemon {
         this.hierarchy = hierarchy;
     }
 
-    @Scheduled(fixedDelay = 6 * 60 * 60000)
+    @Scheduled(fixedDelay = 5000)
     public void sendRemiders() {
         final Date notifyStartingDate = new Date();
         final Gson jsonConverter = new Gson();
@@ -44,12 +44,14 @@ public class NotifyServiceDemon {
                 numberOfSavedWords += user.statNumberOfSavedWords();
                 final UserMemoryCard memoryCard = user.peekTopMemoryCard();
                 final ExpectedData expectedData = user.getExpectedData();
-                if ((expectedData == ExpectedData.NONE) && (memoryCard.getNextAskingDay().compareTo(notifyStartingDate) < 0)) {
+                if ((expectedData == ExpectedData.NONE)
+//                        && (memoryCard.getNextAskingDay().compareTo(notifyStartingDate) < 0)
+                ) {
                     numberOfNotifiedUsers++;
 
                     final BotNetResponse response = new BotNetResponse();
                     response.setReceiverChatId(user.getTelegramId());
-                    response.setMessage("It's time to learn word:\n" + memoryCard.getQuestion() + "\n\n" +
+                    response.setMessage("It's time to learn word:\n\n" + memoryCard.getQuestion() + "\n\n" +
                             "/show");
                     response.addButton(new BotNetButton("show answer", "/show"));
                     user.setExpectedData(ExpectedData.SHOW_ANSWER);
@@ -69,6 +71,7 @@ public class NotifyServiceDemon {
                 "Total saved words : " + numberOfSavedWords + "\n" +
                 "Received requests num : " + hierarchy.getRequestsNumber());
         hierarchy.resetRequestNum();
-        BotNetUtils.httpsPOSTRequest(TELEGRAM_RESPONSE_CONTROLLER, jsonConverter.toJson(adminsReport).getBytes());
+        // do not report spamiii
+        // BotNetUtils.httpsPOSTRequest(TELEGRAM_RESPONSE_CONTROLLER, jsonConverter.toJson(adminsReport).getBytes());
     }
 }
