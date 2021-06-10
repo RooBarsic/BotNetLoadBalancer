@@ -2,6 +2,7 @@ package com.example.message.data;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 /**
  *  [question, ans, number_of_repeats, next_asking_day]
@@ -66,19 +67,24 @@ public class UserMemoryCard {
         calendar.setTime(nextAskingDay);
         if (rate.equals("yes")) {
             numberOfAsking++;
-            if (learned) {
-                calendar.add(Calendar.DATE, numberOfAsking * 5);
-            } else {
-                learned = true;
-                calendar.add(Calendar.DATE, (numberOfAsking * 3) / 2);
-            }
+            calendar.add(Calendar.DATE, numberOfAsking * 50);
+//            if (learned) {
+//                calendar.add(Calendar.DATE, numberOfAsking * 20);
+//            } else {
+//                learned = true;
+//                calendar.add(Calendar.DATE, (numberOfAsking * 20) / 2);
+//            }
         } else if (rate.equals("no")) {
             numberOfAsking++;
-            calendar.add(Calendar.DATE, numberOfAsking);
+            Random random = new Random();
+            int x = Math.abs(random.nextInt()) % 4 + 1;
+            calendar.add(Calendar.DATE, x);
         } else {
             return false;
         }
+        System.out.println(" nextAskingDay was = " + nextAskingDay);
         nextAskingDay = calendar.getTime();
+        System.out.println(" nextAskingDay becomes = " + nextAskingDay);
         return true;
     }
 }
