@@ -190,7 +190,7 @@ public class BotNetUtils {
     }
 
 
-    /** Method to make quick GET request and get the JSON response data*/
+    /** Method to make quick POST request and get the JSON response data*/
     public static String httpsPOSTRequest(@NotNull final String urlPath, byte[] data) {
         try {
             HttpURLConnection con;
