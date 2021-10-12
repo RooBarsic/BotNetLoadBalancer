@@ -3,7 +3,9 @@ package com.example.servingwebcontent.service;
 import com.example.api.bots.BotResponseSender;
 import com.example.message.BotNetResponse;
 import com.example.message.data.UiPlatform;
+import com.example.servingwebcontent.components.MailRuAgentBot;
 import com.example.servingwebcontent.components.TelegramBot;
+import com.example.servingwebcontent.components.VkBot;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -19,10 +21,14 @@ public class ResponseServiceImpl implements ResponseService {
     private final Map<UiPlatform, BotResponseSender> responseSenderByPlatform;
 
     @Autowired
-    ResponseServiceImpl(TelegramBot telegramBot) {
+    ResponseServiceImpl(TelegramBot telegramBot,
+                        VkBot vkBot,
+                        MailRuAgentBot mailRuAgentBot) {
         responsesList = new ConcurrentLinkedDeque<>();
         responseSenderByPlatform = new HashMap<>();
         responseSenderByPlatform.put(UiPlatform.TELEGRAM, telegramBot.getResponseSender());
+        responseSenderByPlatform.put(UiPlatform.VK, vkBot.getResponseSender());
+        responseSenderByPlatform.put(UiPlatform.MAIL_RU_AGENT, mailRuAgentBot.getResponseSender());
     }
 
     @Override
@@ -36,7 +42,7 @@ public class ResponseServiceImpl implements ResponseService {
         responseSender.sendBotNetResponse(response);
     }
 
-    @Scheduled(fixedDelay = 1 * 1 * 60000)
+    @Scheduled(fixedDelay = 1 * 1 * 10000)
     private void processMessages() {
         while (!responsesList.isEmpty()) {
             BotNetResponse response = responsesList.pollFirst();
