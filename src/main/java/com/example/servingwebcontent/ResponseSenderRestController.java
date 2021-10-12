@@ -37,7 +37,7 @@ public class ResponseSenderRestController {
         return response;
     }
 
-    @RequestMapping(value = "/send/telegram", method = RequestMethod.POST)
+    @RequestMapping(value = "/send", method = RequestMethod.POST)
     public Boolean sendTelegramMessage(@RequestBody BotNetResponse response) {
         System.out.println("----- Telegram sender : got new request from POST");
         responseService.addResponseToProcessingQueue(response);

@@ -1,0 +1,38 @@
+{
+  "receiverChatId": "613929425",
+  "message": "Hello Ыфдфдф",
+  "uiPlatform": "TELEGRAM",
+  "buttonsMatrix":[
+    [
+      {
+        "buttonText": "help",
+        "buttonHiddenText": "/help"
+      },
+      {
+        "buttonText": "start",
+        "buttonHiddenText": "/start"
+      }
+    ]
+  ],
+  "inlineButtons": true
+};
+
+
+
+[
+  {
+    "userChatId": "613929425",
+    "message": "Salam",
+    "uiPlatform": "TELEGRAM"
+  },
+  {
+    "userChatId": "613929425",
+    "message": "I am Farrukh",
+    "uiPlatform": "TELEGRAM"
+  },
+  {
+    "userChatId": "613929425",
+    "message": "SDGsdfgsdfhdh",
+    "uiPlatform": "TELEGRAM"
+  }
+]

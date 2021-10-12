@@ -8,12 +8,14 @@ import com.example.servingwebcontent.service.RequestService;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
-import org.telegram.telegrambots.TelegramBotsApi;
-import org.telegram.telegrambots.api.objects.CallbackQuery;
-import org.telegram.telegrambots.api.objects.Message;
-import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
+import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
+import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 
 /**
@@ -63,7 +65,7 @@ public class TelegramBotRequestListener extends TelegramLongPollingBot implement
         }
 
         // add filled box to the processing queue
-        requestService.processRequest(botNetRequest);
+        requestService.addRequestToProcessingQueue(botNetRequest);
     }
 
     @Override
@@ -81,8 +83,9 @@ public class TelegramBotRequestListener extends TelegramLongPollingBot implement
     }
 
     public void botConnect() {
-        TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
         try {
+            TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
+//            telegramBotsApi.registerBot(this);
             System.out.println(" ### Bot connecting....");
             telegramBotsApi.registerBot(this);
             //log.info("TelegramAPI started. Bot connected and waiting for messages");
@@ -95,6 +98,8 @@ public class TelegramBotRequestListener extends TelegramLongPollingBot implement
                 return;
             }
             botConnect();
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
         }
     }
 
@@ -103,4 +108,3 @@ public class TelegramBotRequestListener extends TelegramLongPollingBot implement
         return new TelegramBotResponseSender(getOptions(), botToken);
     }
 }
-
