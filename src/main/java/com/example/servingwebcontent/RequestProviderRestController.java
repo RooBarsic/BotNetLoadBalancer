@@ -1,8 +1,7 @@
 package com.example.servingwebcontent;
 
 import com.example.message.BotNetRequest;
-import com.example.servingwebcontent.components.TelegramBot;
-import com.google.gson.Gson;
+import com.example.servingwebcontent.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,11 +9,11 @@ import java.util.List;
 
 @RestController
 public class RequestProviderRestController {
-    private final TelegramBot telegramBot;
+    private final RequestService requestService;
 
     @Autowired
-    RequestProviderRestController(TelegramBot telegramBot) {
-        this.telegramBot = telegramBot;
+    RequestProviderRestController(RequestService requestService) {
+        this.requestService = requestService;
     }
 
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
@@ -24,25 +23,11 @@ public class RequestProviderRestController {
     }
 
 
-    @RequestMapping(value = "/requests/telegram", method = RequestMethod.GET)
+    @RequestMapping(value = "/requests", method = RequestMethod.GET)
     @ResponseBody
-    public String sendTelegramMessageGET(@RequestParam(name = "size", required = false, defaultValue = "10") int pageSize) {
+    public List<BotNetRequest> getAllRemainingRequests(@RequestParam(name = "size", required = false, defaultValue = "10") int pageSize) {
         System.out.println("Got GET");
-        final List<BotNetRequest> telegramRequestsList = telegramBot.getAndClearReceivedRequestsList(pageSize);
-        final Gson jsonConverter = new Gson();
-        final String jsonResponse = jsonConverter.toJson(telegramRequestsList);
-        return jsonResponse;
-    }
-
-    @RequestMapping(value = "/requests/telegram", method = RequestMethod.POST)
-    @ResponseBody
-    public String sendTelegramMessagePOST(@RequestPart(name = "size") int pageSize,
-                                          @RequestPart(name = "secretKey") String secretKey) {
-        System.out.println("Got POST, key = " + secretKey + " pageSize = " + pageSize);
-        final List<BotNetRequest> telegramRequestsList = telegramBot.getAndClearReceivedRequestsList(pageSize);
-        final Gson jsonConverter = new Gson();
-        final String jsonResponse = jsonConverter.toJson(telegramRequestsList);
-        return jsonResponse;
+        return requestService.getAndDeleteAllNotProcessedRequests();
     }
 }
 

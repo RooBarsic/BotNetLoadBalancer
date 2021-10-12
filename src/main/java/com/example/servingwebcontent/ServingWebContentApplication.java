@@ -20,6 +20,7 @@ public class ServingWebContentApplication {
             tokenStorage.addTokens();
             final String helloUrl = tokenStorage.getTokens("APP_HEROKU_URL") + "/hello";
             while (true) {
+
                 System.out.println("Health checking:: Doing health check from additional worker to " + helloUrl);
                 String response = httpsGETRequest(helloUrl);
                 if (response == null || response.equals("")) {

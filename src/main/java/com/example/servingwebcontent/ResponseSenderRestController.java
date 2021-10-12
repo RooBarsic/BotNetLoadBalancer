@@ -2,18 +2,18 @@ package com.example.servingwebcontent;
 
 
 import com.example.message.BotNetResponse;
-import com.example.message.data.BotNetButton;
-import com.example.servingwebcontent.components.TelegramBot;
+import com.example.message.data.UiPlatform;
+import com.example.servingwebcontent.service.ResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ResponseSenderRestController {
-    private final TelegramBot telegramBot;
+    private final ResponseService responseService;
 
     @Autowired
-    ResponseSenderRestController(TelegramBot telegramBot) {
-        this.telegramBot = telegramBot;
+    ResponseSenderRestController(final ResponseService responseService) {
+        this.responseService = responseService;
     }
 
     @RequestMapping(value = "/send/telegram", method = RequestMethod.GET)
@@ -30,37 +30,17 @@ public class ResponseSenderRestController {
             final BotNetResponse botNetResponse = new BotNetResponse();
             botNetResponse.setReceiverChatId(chatId);
             botNetResponse.setMessage(message);
-            telegramBot.getResponseSender()
-                    .sendBotNetResponse(botNetResponse);
+            botNetResponse.setUiPlatform(UiPlatform.TELEGRAM);
+            responseService.addResponseToProcessingQueue(botNetResponse);
             response += "OK";
         }
         return response;
     }
 
     @RequestMapping(value = "/send/telegram", method = RequestMethod.POST)
-    public String sendTelegramMessage(@RequestBody BotNetResponse response) {
+    public Boolean sendTelegramMessage(@RequestBody BotNetResponse response) {
         System.out.println("----- Telegram sender : got new request from POST");
-        String responseStatus = "";
-        if (response.getReceiverChatId().equals("")) {
-            responseStatus += "Error: No chatId\n";
-        }
-        if (response.getMessage().equals("")) {
-            responseStatus += "Error: No message to send\n";
-        }
-        if (responseStatus.length() == 0) {
-            if (!response.hasButtons()) {
-                response.addButton(new BotNetButton("add words", "/add-words"));
-                response.addButton(new BotNetButton("help", "/help"));
-                response.addButton(new BotNetButton("feedback", "/feedback"));
-                response.setNewButtonsLine();
-                response.addButton(new BotNetButton("statistics", "/statistics"));
-                response.setInlineButtons(true);
-            }
-
-            telegramBot.getResponseSender()
-                    .sendBotNetResponse(response);
-            responseStatus += "OK";
-        }
-        return responseStatus;
+        responseService.addResponseToProcessingQueue(response);
+        return true;
     }
 }

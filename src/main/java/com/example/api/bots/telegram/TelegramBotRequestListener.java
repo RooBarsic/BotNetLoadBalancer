@@ -4,6 +4,7 @@ import com.example.api.bots.BotRequestListener;
 import com.example.api.bots.BotResponseSender;
 import com.example.message.BotNetRequest;
 import com.example.message.data.UiPlatform;
+import com.example.servingwebcontent.service.RequestService;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
@@ -14,8 +15,6 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
 
-import java.util.concurrent.ConcurrentLinkedDeque;
-
 
 /**
  * Class for sending messages from Telegram bot to Telegram user
@@ -24,7 +23,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
  */
 public class TelegramBotRequestListener extends TelegramLongPollingBot implements BotRequestListener {
     private final int RECONNECT_PAUSE = 10000;
-    private final ConcurrentLinkedDeque<BotNetRequest> receivedRequestsQueue;
+    private final RequestService requestService;
 
     @Setter
     @Getter
@@ -35,10 +34,10 @@ public class TelegramBotRequestListener extends TelegramLongPollingBot implement
 
     public TelegramBotRequestListener(@NotNull final String botName,
                                       @NotNull final String botToken,
-                                      @NotNull final ConcurrentLinkedDeque<BotNetRequest> receivedRequestsQueue) {
+                                      @NotNull final RequestService requestService) {
         this.botName = botName;
         this.botToken = botToken;
-        this.receivedRequestsQueue = receivedRequestsQueue;
+        this.requestService = requestService;
     }
 
     @Override
@@ -64,7 +63,7 @@ public class TelegramBotRequestListener extends TelegramLongPollingBot implement
         }
 
         // add filled box to the processing queue
-        receivedRequestsQueue.addLast(botNetRequest);
+        requestService.processRequest(botNetRequest);
     }
 
     @Override

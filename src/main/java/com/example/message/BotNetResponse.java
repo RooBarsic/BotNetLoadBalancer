@@ -2,6 +2,7 @@ package com.example.message;
 
 import com.example.message.data.BotNetButton;
 import com.example.message.data.BotNetFile;
+import com.example.message.data.UiPlatform;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
@@ -14,6 +15,7 @@ import java.util.List;
 public class BotNetResponse {
     private String receiverChatId;
     private String message;
+    private UiPlatform uiPlatform;
     private List<List<BotNetButton>> buttonsMatrix;
     private List<BotNetFile> filesList;
     private boolean inlineButtons = true; // use inline buttons by default
@@ -39,6 +41,14 @@ public class BotNetResponse {
     public void cleanButtons() {
         buttonsMatrix.clear();
         setNewButtonsLine();
+    }
+
+    public UiPlatform getUiPlatform() {
+        return uiPlatform;
+    }
+
+    public void setUiPlatform(UiPlatform uiPlatform) {
+        this.uiPlatform = uiPlatform;
     }
 
     public boolean hasButtons() {

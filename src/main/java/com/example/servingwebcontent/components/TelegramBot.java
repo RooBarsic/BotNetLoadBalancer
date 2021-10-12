@@ -5,6 +5,7 @@ import com.example.api.bots.BotResponseSender;
 import com.example.api.bots.telegram.TelegramBotRequestListener;
 import com.example.api.bots.telegram.TelegramBotResponseSender;
 import com.example.message.BotNetRequest;
+import com.example.servingwebcontent.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.ApiContextInitializer;
@@ -21,22 +22,21 @@ import java.util.concurrent.ConcurrentLinkedDeque;
  * @author Farrukh Karimov
  */
 @Component
-public class TelegramBot {
+public class TelegramBot implements BotNetBot {
     private final String BOT_NAME_HANDLE = "TESTING_TELEGRAM_BOT_NAME";
     private final String BOT_TOKEN_HANDLE = "TESTING_TELEGRAM_BOT_TOKEN";
     private final TelegramBotRequestListener telegramBotRequestListener;
     private final TelegramBotResponseSender telegramBotResponseSender;
-    private final ConcurrentLinkedDeque<BotNetRequest> receivedRequestsQueue;
 
     @Autowired
-    TelegramBot(TokenStorage tokenStorage, BotNetRequestParser botNetRequestParser) {
+    TelegramBot(final TokenStorage tokenStorage,
+                final RequestService requestService) {
         System.out.println("##### Starting Telegram bot ....... ");
-        receivedRequestsQueue = botNetRequestParser.getReceivedRequestsQueue();
         ApiContextInitializer.init();
 
         final String BOT_NAME = tokenStorage.getTokens(BOT_NAME_HANDLE);
         final String BOT_TOKEN = tokenStorage.getTokens(BOT_TOKEN_HANDLE);
-        telegramBotRequestListener = new TelegramBotRequestListener(BOT_NAME, BOT_TOKEN, receivedRequestsQueue);
+        telegramBotRequestListener = new TelegramBotRequestListener(BOT_NAME, BOT_TOKEN, requestService);
         telegramBotRequestListener.botConnect();
 
         telegramBotResponseSender = (TelegramBotResponseSender) telegramBotRequestListener.getBotResponseSender();
@@ -44,25 +44,13 @@ public class TelegramBot {
         System.out.println("##### Telegram bot - started ....... ");
     }
 
+    @Override
     public BotRequestListener getRequestListener() {
         return telegramBotRequestListener;
     }
 
+    @Override
     public BotResponseSender getResponseSender() {
         return telegramBotResponseSender;
-    }
-
-    public List<BotNetRequest> getAndClearReceivedRequestsList(int responseSize) {
-        List<BotNetRequest> requestList = new LinkedList<>();
-        synchronized (receivedRequestsQueue) {
-            for (BotNetRequest request : receivedRequestsQueue) {
-                requestList.add(request);
-                responseSize--;
-                if (responseSize == 0) {
-                    break;
-                }
-            }
-        }
-        return requestList;
     }
 }
