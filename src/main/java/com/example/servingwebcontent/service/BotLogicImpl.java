@@ -22,16 +22,29 @@ public class BotLogicImpl implements BotLogic {
         response.setUiPlatform(request.getUiPlatform());
 
         // logic
-        response.setMessage("Hello " + request.getMessage());
+        String message = request.getMessage();
 
-        response.addButton(new BotNetButton("help", "help"));
-        response.addButton(new BotNetButton("start", "start"));
-        response.addButton(new BotNetButton("info", "info"));
 
-        response.setNewButtonsLine();
-        response.addButton(new BotNetButton("locations", "locations"));
-        response.addButton(new BotNetButton("masters", "masters"));
-        response.addButton(new BotNetButton("free slots", "free slots"));
+        if (message.startsWith("Записаться")) {
+            response.setMessage("Sorry " + request.getMessage() + ". Not implemented yet.");
+            response.addButton(new BotNetButton("Записаться", "Записаться"));
+            response.addButton(new BotNetButton("info", "info"));
+            response.addButton(new BotNetButton("help", "help"));
+        }
+        else if (message.startsWith("info")) {
+            response.setMessage("Our company provides best barbershop services in Saint-Petersburg");
+            response.addButton(new BotNetButton("Записаться", "Записаться"));
+            response.addButton(new BotNetButton("info", "info"));
+            response.addButton(new BotNetButton("help", "help"));
+        }
+        else if (message.startsWith("help")) {
+            response.setMessage("How can I help you?");
+        } else {
+            response.setMessage("Hello " + request.getMessage());
+            response.addButton(new BotNetButton("Записаться", "Записаться"));
+            response.addButton(new BotNetButton("info", "info"));
+            response.addButton(new BotNetButton("help", "help"));
+        }
 
         sendResponse(response);
         return true;
