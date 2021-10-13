@@ -46,7 +46,7 @@ public class RequestServiceImpl implements RequestService {
         return false;
     }
 
-    @Scheduled(fixedDelay = 1 * 1 * 60000)
+    @Scheduled(fixedDelay = 1 * 1 * 100)
     private void processMessages() {
         while (!requestsList.isEmpty()) {
             synchronized (requestsList) {

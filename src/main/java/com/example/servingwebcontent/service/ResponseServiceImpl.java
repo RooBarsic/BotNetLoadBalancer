@@ -42,7 +42,7 @@ public class ResponseServiceImpl implements ResponseService {
         responseSender.sendBotNetResponse(response);
     }
 
-    @Scheduled(fixedDelay = 1 * 1 * 10000)
+    @Scheduled(fixedDelay = 1 * 1 * 100)
     private void processMessages() {
         while (!responsesList.isEmpty()) {
             BotNetResponse response = responsesList.pollFirst();
