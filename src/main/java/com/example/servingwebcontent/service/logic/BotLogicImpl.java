@@ -24,16 +24,39 @@ public class BotLogicImpl implements BotLogic {
         this.responseService = responseService;
         this.userById = new HashMap<>();
         masters = new ArrayList<>();
+    }
 
+    private void addDefaultMasters() {
         Master abdullo = new Master();
-        abdullo.setName("Abdullo");
+        abdullo.setName("Абдулло");
         abdullo.addSerivse(Services.STRIZKA, Arrays.asList("12:00", "13:00", "14:00"));
         masters.add(abdullo);
 
+        Master abdullo2 = new Master();
+        abdullo2.setName("Коля");
+        abdullo2.addSerivse(Services.STRIZKA, Arrays.asList("13:00", "14:00", "18:00"));
+        masters.add(abdullo2);
+
+        Master abdullo3 = new Master();
+        abdullo3.setName("Саня");
+        abdullo3.addSerivse(Services.STRIZKA, Arrays.asList("9:00", "15:00", "16:00"));
+        masters.add(abdullo3);
+
+
         Master sasha = new Master();
-        sasha.setName("Sasha");
+        sasha.setName("Саша");
         sasha.addSerivse(Services.BORODA, Arrays.asList("09:00", "10:00", "11:00"));
         masters.add(sasha);
+
+        Master sasha2 = new Master();
+        sasha2.setName("Махмуд");
+        sasha2.addSerivse(Services.BORODA, Arrays.asList("08:00", "13:00", "17:00"));
+        masters.add(sasha2);
+
+        Master sasha3 = new Master();
+        sasha3.setName("Ахмаджан");
+        sasha3.addSerivse(Services.BORODA, Arrays.asList("15:00", "16:00", "18:00"));
+        masters.add(sasha3);
     }
 
     @Override
