@@ -38,7 +38,7 @@ public class BotLogicImpl implements BotLogic {
         masters.add(abdullo2);
 
         Master abdullo3 = new Master();
-        abdullo3.setName("Саня");
+        abdullo3.setName("Костя");
         abdullo3.addSerivse(Services.STRIZKA, Arrays.asList("9:00", "15:00", "16:00"));
         masters.add(abdullo3);
 
