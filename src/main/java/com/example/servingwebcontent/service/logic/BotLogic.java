@@ -1,4 +1,4 @@
-package com.example.servingwebcontent.service;
+package com.example.servingwebcontent.service.logic;
 
 
 import com.example.message.BotNetRequest;
