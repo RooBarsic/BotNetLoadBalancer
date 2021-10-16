@@ -28,7 +28,7 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public void addRequestToProcessingQueue(final @NotNull BotNetRequest request) {
         requestsList.addLast(request);
-        System.out.println("Got new request");
+        System.out.println("Got new request: [" + request.getUiPlatform() + " " + request.getUserChatId() + " ] message = " + request.getMessage());
     }
 
     @Override
