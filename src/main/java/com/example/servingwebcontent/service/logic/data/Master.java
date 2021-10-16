@@ -1,12 +1,12 @@
 package com.example.servingwebcontent.service.logic.data;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Master {
     private String name = "null";
-    private Map<Services, List<String>> serviceAndTimes = new HashMap<>();
+    private Set<String> timeSlots = new HashSet<>();
+    private Set<Services> services = new HashSet<>();
 
     public String getName() {
         return name;
@@ -16,19 +16,44 @@ public class Master {
         this.name = name;
     }
 
-    public void addSerivse(Services service, List<String> dates) {
-        serviceAndTimes.put(service, dates);
+    public void addSerivse(Services service) {
+        services.add(service);
+    }
+
+    public void addSerivse(List<Services> service) {
+        services.addAll(service);
+    }
+
+    public void addTimeSlots(List<String> timeSlots) {
+        this.timeSlots.addAll(timeSlots);
+    }
+
+    public boolean hasTimeSlot(String timeSlot) {
+        return timeSlots.contains(timeSlot);
+    }
+
+    public void addServicesAndTimeSlots(List<Services> services, List<String> timeSlots) {
+        this.services.addAll(services);
+        this.timeSlots.addAll(timeSlots);
     }
 
     public boolean hashSerivce(Services service) {
-        return serviceAndTimes.containsKey(service);
+        return services.contains(service);
     }
 
-    public Map<Services, List<String>> getServiceAndTimes() {
-        return serviceAndTimes;
+    /**
+     * @param timeslot
+     * @return - true если таймслот найде. false - если такого таймлоста у нас нет.
+     */
+    public boolean blockTimeSlot(String timeslot) {
+        if (timeSlots.contains(timeslot)) {
+            timeSlots.remove(timeslot);
+            return true;
+        }
+        return false;
     }
 
-    public void setServiceAndTimes(Map<Services, List<String>> serviceAndTimes) {
-        this.serviceAndTimes = serviceAndTimes;
+    public List<String> getTimeSlots() {
+        return timeSlots.stream().sorted(String::compareTo).collect(Collectors.toList());
     }
 }
