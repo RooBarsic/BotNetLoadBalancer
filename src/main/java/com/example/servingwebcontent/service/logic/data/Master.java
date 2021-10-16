@@ -37,7 +37,7 @@ public class Master {
         this.timeSlots.addAll(timeSlots);
     }
 
-    public boolean hashSerivce(Services service) {
+    public boolean hasSerivce(Services service) {
         return services.contains(service);
     }
 

@@ -107,7 +107,7 @@ public class BotLogicImpl implements BotLogic {
                                 "Пожалуйста выберите мастера:");
                         response.addButton(new BotNetButton2("Любой мастер"));
                         for (Master master : masters) {
-                            if (master.hashSerivce(user.getDefaultOrder().getServices())) {
+                            if (master.hasSerivce(user.getDefaultOrder().getServices())) {
                                 response.addButton(new BotNetButton2(master.getName()));
                             }
                         }
@@ -132,7 +132,7 @@ public class BotLogicImpl implements BotLogic {
 
                             Set<String> avaiilableTimeSlots = new HashSet<>();
                             for (Master master1 : masters) {
-                                if (master1.hashSerivce(user.getDefaultOrder().getServices())) {
+                                if (master1.hasSerivce(user.getDefaultOrder().getServices())) {
                                     avaiilableTimeSlots.addAll(master1.getTimeSlots());
                                 }
                             }
@@ -148,7 +148,7 @@ public class BotLogicImpl implements BotLogic {
                                     "Пожалуйста выберите одно из мастеров:");
                             response.addButton(new BotNetButton2("Любой мастер"));
                             for (Master m : masters) {
-                                if (m.hashSerivce(user.getDefaultOrder().getServices())) {
+                                if (m.hasSerivce(user.getDefaultOrder().getServices())) {
                                     response.addButton(new BotNetButton2(m.getName()));
                                 }
                             }
@@ -175,7 +175,7 @@ public class BotLogicImpl implements BotLogic {
                     if (user.getDefaultOrder().getMaster() == null) {
                         Set<String> avaiilableTimeSlots = new HashSet<>();
                         for (Master master1 : masters) {
-                            if (master1.hashSerivce(user.getDefaultOrder().getServices())) {
+                            if (master1.hasSerivce(user.getDefaultOrder().getServices())) {
                                 avaiilableTimeSlots.addAll(master1.getTimeSlots());
                             }
                         }
@@ -203,7 +203,7 @@ public class BotLogicImpl implements BotLogic {
                         if (user.getDefaultOrder().getMaster() == null) { // мы смами выбираем мастера
                             Master master1 = null;
                             for (Master master2 : masters) {
-                                if (master2.hasTimeSlot(message) && master2.hashSerivce(user.getDefaultOrder().getServices())) {
+                                if (master2.hasTimeSlot(message) && master2.hasSerivce(user.getDefaultOrder().getServices())) {
                                     master1 = master2;
                                     break;
                                 }
