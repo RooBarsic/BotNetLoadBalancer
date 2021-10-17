@@ -68,4 +68,31 @@ class MasterTest {
         assertTrue(master.hasTimeSlot("09:00"));
         assertTrue(master.hasTimeSlot("11:00"));
     }
+
+    @Test
+    void canSetAndModifyOrder(){
+        Order order = new Order();
+        order.setMaster(master);
+        order.setUserName("Ivan");
+        order.setPhone("81234567890");
+        order.setServices(Services.BORODA);
+        order.setDate("09:00");
+        String expected = "\nУслуга : борода\n" +
+                "Мастер : null\n" +
+                "Время : 09:00\n" +
+                "Имя клента : Ivan\n" +
+                "Телефон клиента : 81234567890\n";
+        String actual = order.getOrderInfo();
+        assertEquals(expected, actual);
+
+        master.setName("Oleg");
+        expected = "\nУслуга : борода\n" +
+                "Мастер : Oleg\n" +
+                "Время : 09:00\n" +
+                "Имя клента : Ivan\n" +
+                "Телефон клиента : 81234567890\n";
+        actual = order.getOrderInfo();
+        assertEquals(expected, actual);
+
+    }
 }
