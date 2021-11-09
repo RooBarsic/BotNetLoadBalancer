@@ -37,8 +37,21 @@ public class Master {
         this.timeSlots.addAll(timeSlots);
     }
 
-    public boolean hasSerivce(BarberShopServise service) {
+    public boolean hasService(BarberShopServise service) {
+        if (BarberShopServise.BORODA_AND_STRIZKA == service) {
+            return services.contains(BarberShopServise.BORODA) &&
+                    services.contains(BarberShopServise.STRIZKA);
+        }
         return services.contains(service);
+    }
+
+    public boolean hasServices(List<BarberShopServise> servises) {
+        for (BarberShopServise service : servises) {
+            if (hasService(service) == false) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

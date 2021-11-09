@@ -25,7 +25,7 @@ public class MastersServiceImpl implements MastersService {
     public List<Master> getAllMastersByService(BarberShopServise barberShopServise) {
         List<Master> mastersByService = new ArrayList<>();
         for (Master master : masters) {
-            if (master.hasSerivce(barberShopServise)) {
+            if (master.hasService(barberShopServise)) {
                 mastersByService.add(master);
             }
         }
@@ -73,6 +73,17 @@ public class MastersServiceImpl implements MastersService {
             }
         }
         return null;
+    }
+
+    @Override
+    public List<Master> getMastersByMultipleServices(List<BarberShopServise> servises) {
+        List<Master> availableMasters = new ArrayList<>();
+        for (Master master : masters) {
+            if (master.hasServices(servises)) {
+                availableMasters.add(master);
+            }
+        }
+        return availableMasters;
     }
 
     private void addDefaultMasters() {

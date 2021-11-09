@@ -11,7 +11,6 @@ import com.example.servingwebcontent.service.logic.data.User;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -61,6 +60,8 @@ public class BotLogicImpl implements BotLogic {
                     switch (message) {
                         case "выбор услуги":
                             response.setMessage("Выберите услугу");
+                            response.addButton(new BotNetButton2(BarberShopServise.BORODA_AND_STRIZKA.toString()));
+                            response.setNewButtonsLine();
                             response.addButton(new BotNetButton2(BarberShopServise.BORODA.toString()));
                             response.addButton(new BotNetButton2(BarberShopServise.STRIZKA.toString()));
                             response.setNewButtonsLine();
@@ -158,12 +159,7 @@ public class BotLogicImpl implements BotLogic {
 
                     List<String> masterTimeSlots = new ArrayList<>();
                     if (user.getDefaultOrder().getMaster() == null) {
-                        Set<String> avaiilableTimeSlots = new HashSet<>();
-                        for (Master master1 : mastersService.getAllMastersByService(user.getDefaultOrder().getServices())) {
-                            avaiilableTimeSlots.addAll(master1.getTimeSlots());
-                        }
-                        masterTimeSlots.addAll(avaiilableTimeSlots);
-                        masterTimeSlots.sort(String::compareTo);
+                        masterTimeSlots = mastersService.getAvailableTimeSlots(mastersService.getAllMastersByService(user.getDefaultOrder().getServices()));
                     } else {
                         masterTimeSlots.addAll(user.getDefaultOrder().getMaster().getTimeSlots());
                     }

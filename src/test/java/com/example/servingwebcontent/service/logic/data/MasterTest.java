@@ -30,14 +30,14 @@ class MasterTest {
     @Test
     void canProperlySetServise(){
         master.addSerivse(BarberShopServise.BORODA);
-        boolean actual = master.hasSerivce(BarberShopServise.BORODA);
+        boolean actual = master.hasService(BarberShopServise.BORODA);
         assertTrue(actual);
 
         master.addSerivse(BarberShopServise.STRIZKA);
-        actual = master.hasSerivce(BarberShopServise.BORODA);
+        actual = master.hasService(BarberShopServise.BORODA);
         assertTrue(actual);
 
-        actual = master.hasSerivce(BarberShopServise.STRIZKA);
+        actual = master.hasService(BarberShopServise.STRIZKA);
         assertTrue(actual);
     }
     @Test
@@ -59,8 +59,8 @@ class MasterTest {
     @Test
     void addServicesAndTimeSlots() {
         master.addServicesAndTimeSlots(Arrays.asList(BarberShopServise.BORODA, BarberShopServise.STRIZKA),Arrays.asList("09:00","11:00"));
-        assertTrue(master.hasSerivce(BarberShopServise.BORODA));
-        assertTrue(master.hasSerivce(BarberShopServise.STRIZKA));
+        assertTrue(master.hasService(BarberShopServise.BORODA));
+        assertTrue(master.hasService(BarberShopServise.STRIZKA));
         assertTrue(master.hasTimeSlot("09:00"));
         assertTrue(master.hasTimeSlot("11:00"));
     }

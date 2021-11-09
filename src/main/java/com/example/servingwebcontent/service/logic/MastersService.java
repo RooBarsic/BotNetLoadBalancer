@@ -14,4 +14,5 @@ public interface MastersService {
     List<String> getAvailableTimeSlots(List<Master> masters);
     Master blockTimeSlotForMaster(Master master, String timeSlot);
     Master getMasterByServiceAndTimeSlot(BarberShopServise barberShopServise, String timeSlot);
+    List<Master> getMastersByMultipleServices(List<BarberShopServise> servises);
 }
