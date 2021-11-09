@@ -2,13 +2,9 @@ package com.example.servingwebcontent.service.logic.data;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,15 +29,15 @@ class MasterTest {
     }
     @Test
     void canProperlySetServise(){
-        master.addSerivse(Services.BORODA);
-        boolean actual = master.hasSerivce(Services.BORODA);
+        master.addSerivse(BarberShopServise.BORODA);
+        boolean actual = master.hasSerivce(BarberShopServise.BORODA);
         assertTrue(actual);
 
-        master.addSerivse(Services.STRIZKA);
-        actual = master.hasSerivce(Services.BORODA);
+        master.addSerivse(BarberShopServise.STRIZKA);
+        actual = master.hasSerivce(BarberShopServise.BORODA);
         assertTrue(actual);
 
-        actual = master.hasSerivce(Services.STRIZKA);
+        actual = master.hasSerivce(BarberShopServise.STRIZKA);
         assertTrue(actual);
     }
     @Test
@@ -62,9 +58,9 @@ class MasterTest {
 
     @Test
     void addServicesAndTimeSlots() {
-        master.addServicesAndTimeSlots(Arrays.asList(Services.BORODA,Services.STRIZKA),Arrays.asList("09:00","11:00"));
-        assertTrue(master.hasSerivce(Services.BORODA));
-        assertTrue(master.hasSerivce(Services.STRIZKA));
+        master.addServicesAndTimeSlots(Arrays.asList(BarberShopServise.BORODA, BarberShopServise.STRIZKA),Arrays.asList("09:00","11:00"));
+        assertTrue(master.hasSerivce(BarberShopServise.BORODA));
+        assertTrue(master.hasSerivce(BarberShopServise.STRIZKA));
         assertTrue(master.hasTimeSlot("09:00"));
         assertTrue(master.hasTimeSlot("11:00"));
     }
@@ -75,7 +71,7 @@ class MasterTest {
         order.setMaster(master);
         order.setUserName("Ivan");
         order.setPhone("81234567890");
-        order.setServices(Services.BORODA);
+        order.setServices(BarberShopServise.BORODA);
         order.setDate("09:00");
         String expected = "\nУслуга : борода\n" +
                 "Мастер : null\n" +
