@@ -48,14 +48,34 @@ public class MastersServiceImpl implements MastersService {
     }
 
     @Override
-    public List<String> getAvailableTimeSlots(List<Master> masters) {
+    public List<String> getAvailableTimeSlots(List<Master> masters, BarberShopServise service) {
         Set<String> availableTimeSlots = new HashSet<>();
         for (Master master1 : masters) {
-            availableTimeSlots.addAll(master1.getTimeSlots());
+            availableTimeSlots.addAll(getAvailableTimeSlots(master1, service));
         }
         List<String> openTimeSlots = new ArrayList<>(availableTimeSlots);
         openTimeSlots.sort(String::compareTo);
         return openTimeSlots;
+    }
+
+    @Override
+    public List<String> getAvailableTimeSlots(Master masters, BarberShopServise servise) {
+        if (servise == BarberShopServise.BORODA_AND_STRIZKA) {
+            List<String> timeSlots = masters.getTimeSlots();
+            timeSlots.sort(String::compareTo);
+            List<String> approvedTimeSlots = new ArrayList<>();
+            for (int i = 1; i < timeSlots.size(); i++) {
+                String startTime = timeSlots.get(i - 1);
+                String nextTime = MathUtils.addMinutes20(startTime);
+                if (nextTime.equals(timeSlots.get(i))) {
+                    approvedTimeSlots.add(startTime);
+                }
+            }
+            return approvedTimeSlots;
+        }
+        else {
+            return masters.getTimeSlots();
+        }
     }
 
     @Override
@@ -135,6 +155,16 @@ public class MastersServiceImpl implements MastersService {
                 Arrays.asList("15:00", "16:00", "18:00")
         );
         masters.add(sasha3);
+
+        //advanced masters
+        Master ahmad = new Master();
+        ahmad.setName("Ахмад");
+        ahmad.addServicesAndTimeSlots(
+                Arrays.asList(BarberShopServise.BORODA, BarberShopServise.STRIZKA),
+                Arrays.asList("15:00", "15:20", "15:40", "16:00", "16:20", "18:00")
+        );
+        masters.add(ahmad);
+
     }
 
 }

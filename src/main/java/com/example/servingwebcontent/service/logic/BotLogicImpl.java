@@ -123,7 +123,7 @@ public class BotLogicImpl implements BotLogic {
                             response.setMessage("Мастер выберится автоматичеки в зависмости от выбранного мастера." +
                                     "\nПожалуйста выберите время:");
 
-                            List<String> avaiilableTimeSlots = mastersService.getAvailableTimeSlots(mastersService.getAllMastersByService(user.getDefaultOrder().getServices()));
+                            List<String> avaiilableTimeSlots = mastersService.getAvailableTimeSlots(mastersService.getAllMastersByService(user.getDefaultOrder().getServices()), user.getDefaultOrder().getServices());
                             for (String time : avaiilableTimeSlots) {
                                 response.addButton(new BotNetButton2(time));
                             }
@@ -146,7 +146,7 @@ public class BotLogicImpl implements BotLogic {
                         user.getDefaultOrder().setMaster(master);
                         response.setMessage("Вы выбрали мастера " + master.getName() + "\n" +
                                 "Пожалуйста выберите время:");
-                        for (String time : master.getTimeSlots()) {
+                        for (String time : mastersService.getAvailableTimeSlots(master, user.getDefaultOrder().getServices())) {
                             response.addButton(new BotNetButton2(time));
                         }
                         response.setNewButtonsLine();
@@ -159,9 +159,12 @@ public class BotLogicImpl implements BotLogic {
 
                     List<String> masterTimeSlots = new ArrayList<>();
                     if (user.getDefaultOrder().getMaster() == null) {
-                        masterTimeSlots = mastersService.getAvailableTimeSlots(mastersService.getAllMastersByService(user.getDefaultOrder().getServices()));
+                        masterTimeSlots = mastersService.getAvailableTimeSlots(mastersService.getAllMastersByService(user.getDefaultOrder().getServices()), user.getDefaultOrder().getServices());
                     } else {
-                        masterTimeSlots.addAll(user.getDefaultOrder().getMaster().getTimeSlots());
+                        masterTimeSlots.addAll(mastersService.getAvailableTimeSlots(
+                                user.getDefaultOrder().getMaster(),
+                                user.getDefaultOrder().getServices())
+                        );
                     }
                     for (String time : masterTimeSlots) {
                         if (time.equals(message)) {
