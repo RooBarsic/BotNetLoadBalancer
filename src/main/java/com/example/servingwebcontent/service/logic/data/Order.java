@@ -4,14 +4,14 @@ public class Order {
     private Master master;
     private String userName;
     private String phone;
-    private Services services;
+    private BarberShopServise barberShopServise;
     private String date;
 
     Order() {
         master = null;
         userName = "null";
         phone = "null";
-        services = Services.NONE;
+        barberShopServise = BarberShopServise.NONE;
         date = "null";
     }
 
@@ -50,12 +50,12 @@ public class Order {
         this.phone = phone;
     }
 
-    public Services getServices() {
-        return services;
+    public BarberShopServise getServices() {
+        return barberShopServise;
     }
 
-    public void setServices(Services services) {
-        this.services = services;
+    public void setServices(BarberShopServise barberShopServise) {
+        this.barberShopServise = barberShopServise;
     }
 
     public String getDate() {

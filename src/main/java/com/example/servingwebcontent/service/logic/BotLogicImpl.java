@@ -5,13 +5,12 @@ import com.example.message.BotNetResponse;
 import com.example.message.data.BotNetButton2;
 import com.example.servingwebcontent.service.ResponseService;
 import com.example.servingwebcontent.service.logic.data.Master;
-import com.example.servingwebcontent.service.logic.data.Services;
+import com.example.servingwebcontent.service.logic.data.BarberShopServise;
 import com.example.servingwebcontent.service.logic.data.Status;
 import com.example.servingwebcontent.service.logic.data.User;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -19,14 +18,13 @@ public class BotLogicImpl implements BotLogic {
     private String GREETING = "Добрый день. Я чат бот для бронирования сеансов в ITMO Barbershop";
     private final ResponseService responseService;
     private final Map<String, User> userById;
-    private final List<Master> masters;
+    private final MastersService mastersService;
 
-    BotLogicImpl(final ResponseService responseService) {
+    BotLogicImpl(final ResponseService responseService,
+                 final MastersService mastersService) {
         this.responseService = responseService;
         this.userById = new HashMap<>();
-        masters = new ArrayList<>();
-
-        addDefaultMasters();
+        this.mastersService = mastersService;
     }
 
     @Override
@@ -62,8 +60,10 @@ public class BotLogicImpl implements BotLogic {
                     switch (message) {
                         case "выбор услуги":
                             response.setMessage("Выберите услугу");
-                            response.addButton(new BotNetButton2(Services.BORODA.toString()));
-                            response.addButton(new BotNetButton2(Services.STRIZKA.toString()));
+                            response.addButton(new BotNetButton2(BarberShopServise.BORODA_AND_STRIZKA.toString()));
+                            response.setNewButtonsLine();
+                            response.addButton(new BotNetButton2(BarberShopServise.BORODA.toString()));
+                            response.addButton(new BotNetButton2(BarberShopServise.STRIZKA.toString()));
                             response.setNewButtonsLine();
                             response.addButton(new BotNetButton2("HOME"));
                             user.setStatus(Status.REQUIRED_SERVICE);
@@ -92,51 +92,39 @@ public class BotLogicImpl implements BotLogic {
                     }
                     break;
                 case REQUIRED_SERVICE:
-                    Services service = Services.getServiceOrNull(message);
+                    BarberShopServise service = BarberShopServise.getServiceOrNull(message);
                     if (service == null) {
                         response.setMessage("Я вас не понял.\n" +
                                 "Пожалуйста выберите одно из услугу:");
-                        response.addButton(new BotNetButton2(Services.BORODA.toString()));
-                        response.addButton(new BotNetButton2(Services.STRIZKA.toString()));
+                        response.addButton(new BotNetButton2(BarberShopServise.BORODA.toString()));
+                        response.addButton(new BotNetButton2(BarberShopServise.STRIZKA.toString()));
                         response.setNewButtonsLine();
                         response.addButton(new BotNetButton2("HOME"));
                         user.setStatus(Status.REQUIRED_SERVICE);
                     } else {
-                        user.getDefaultOrder().setServices(service);
+                           user.getDefaultOrder().setServices(service);
                         response.setMessage("Вы выбрали услугу " + service.toString() + "\n" +
                                 "Пожалуйста выберите мастера:");
                         response.addButton(new BotNetButton2("Любой мастер"));
-                        for (Master master : masters) {
-                            if (master.hasSerivce(user.getDefaultOrder().getServices())) {
-                                response.addButton(new BotNetButton2(master.getName()));
-                            }
-                        }
+                        mastersService.getAllMastersByService(user.getDefaultOrder().getServices())
+                                .forEach(master -> {
+                                    response.addButton(new BotNetButton2(master.getName()));
+                                });
                         response.setNewButtonsLine();
                         response.addButton(new BotNetButton2("HOME"));
                         user.setStatus(Status.REQUIRED_MASTER);
                     }
                     break;
                 case REQUIRED_MASTER:
-                    Master master = null;
-                    for (Master m : masters) {
-                        if (m.getName().equals(message)) {
-                            master = m;
-                            break;
-                        }
-                    }
+                    Master master = mastersService.getMasterByName(message);
                     if (master == null) {
                         if (message.equals("Любой мастер")) {
                             user.getDefaultOrder().setMaster(null);
                             response.setMessage("Мастер выберится автоматичеки в зависмости от выбранного мастера." +
                                     "\nПожалуйста выберите время:");
 
-                            Set<String> avaiilableTimeSlots = new HashSet<>();
-                            for (Master master1 : masters) {
-                                if (master1.hasSerivce(user.getDefaultOrder().getServices())) {
-                                    avaiilableTimeSlots.addAll(master1.getTimeSlots());
-                                }
-                            }
-                            for (String time : avaiilableTimeSlots.stream().sorted().collect(Collectors.toList())) {
+                            List<String> avaiilableTimeSlots = mastersService.getAvailableTimeSlots(mastersService.getAllMastersByService(user.getDefaultOrder().getServices()), user.getDefaultOrder().getServices());
+                            for (String time : avaiilableTimeSlots) {
                                 response.addButton(new BotNetButton2(time));
                             }
                             response.setNewButtonsLine();
@@ -147,10 +135,8 @@ public class BotLogicImpl implements BotLogic {
                             response.setMessage("Я вас не понимаю.\n" +
                                     "Пожалуйста выберите одно из мастеров:");
                             response.addButton(new BotNetButton2("Любой мастер"));
-                            for (Master m : masters) {
-                                if (m.hasSerivce(user.getDefaultOrder().getServices())) {
-                                    response.addButton(new BotNetButton2(m.getName()));
-                                }
+                            for (Master m : mastersService.getAllMastersByService(user.getDefaultOrder().getServices())) {
+                                response.addButton(new BotNetButton2(m.getName()));
                             }
                             response.setNewButtonsLine();
                             response.addButton(new BotNetButton2("HOME"));
@@ -160,7 +146,7 @@ public class BotLogicImpl implements BotLogic {
                         user.getDefaultOrder().setMaster(master);
                         response.setMessage("Вы выбрали мастера " + master.getName() + "\n" +
                                 "Пожалуйста выберите время:");
-                        for (String time : master.getTimeSlots()) {
+                        for (String time : mastersService.getAvailableTimeSlots(master, user.getDefaultOrder().getServices())) {
                             response.addButton(new BotNetButton2(time));
                         }
                         response.setNewButtonsLine();
@@ -173,16 +159,12 @@ public class BotLogicImpl implements BotLogic {
 
                     List<String> masterTimeSlots = new ArrayList<>();
                     if (user.getDefaultOrder().getMaster() == null) {
-                        Set<String> avaiilableTimeSlots = new HashSet<>();
-                        for (Master master1 : masters) {
-                            if (master1.hasSerivce(user.getDefaultOrder().getServices())) {
-                                avaiilableTimeSlots.addAll(master1.getTimeSlots());
-                            }
-                        }
-                        masterTimeSlots.addAll(avaiilableTimeSlots);
-                        masterTimeSlots.sort(String::compareTo);
+                        masterTimeSlots = mastersService.getAvailableTimeSlots(mastersService.getAllMastersByService(user.getDefaultOrder().getServices()), user.getDefaultOrder().getServices());
                     } else {
-                        masterTimeSlots.addAll(user.getDefaultOrder().getMaster().getTimeSlots());
+                        masterTimeSlots.addAll(mastersService.getAvailableTimeSlots(
+                                user.getDefaultOrder().getMaster(),
+                                user.getDefaultOrder().getServices())
+                        );
                     }
                     for (String time : masterTimeSlots) {
                         if (time.equals(message)) {
@@ -201,13 +183,7 @@ public class BotLogicImpl implements BotLogic {
                         user.setStatus(Status.REQUIRED_TIME_SLOT);
                     } else {
                         if (user.getDefaultOrder().getMaster() == null) { // мы смами выбираем мастера
-                            Master master1 = null;
-                            for (Master master2 : masters) {
-                                if (master2.hasTimeSlot(message) && master2.hasSerivce(user.getDefaultOrder().getServices())) {
-                                    master1 = master2;
-                                    break;
-                                }
-                            }
+                            Master master1 = mastersService.getMasterByServiceAndTimeSlot(user.getDefaultOrder().getServices(), message);
                             user.getDefaultOrder().setMaster(master1);
                             response.setMessage("Вы выбрали время " + timeSlot + "\n" +
                                     "Вашем мастером будет : " + master1.getName() + "\n" +
@@ -295,56 +271,5 @@ public class BotLogicImpl implements BotLogic {
 
     private void sendResponse(BotNetResponse response) {
         responseService.addResponseToProcessingQueue(response);
-    }
-
-    private void addDefaultMasters() {
-        Master abdullo = new Master();
-        abdullo.setName("Абдулло");
-        abdullo.addServicesAndTimeSlots(
-                Arrays.asList(Services.STRIZKA),
-                Arrays.asList("12:00", "13:00", "14:00")
-        );
-        masters.add(abdullo);
-
-        Master abdullo2 = new Master();
-        abdullo2.setName("Коля");
-        abdullo2.addServicesAndTimeSlots(
-                Arrays.asList(Services.STRIZKA),
-                Arrays.asList("13:00", "14:00", "18:00")
-        );
-        masters.add(abdullo2);
-
-        Master abdullo3 = new Master();
-        abdullo3.setName("Костя");
-        abdullo3.addServicesAndTimeSlots(
-                Arrays.asList(Services.STRIZKA),
-                Arrays.asList("09:00", "15:00", "16:00")
-        );
-        masters.add(abdullo3);
-
-
-        Master sasha = new Master();
-        sasha.setName("Саша");
-        sasha.addServicesAndTimeSlots(
-                Arrays.asList(Services.BORODA),
-                Arrays.asList("09:00", "10:00", "11:00")
-        );
-        masters.add(sasha);
-
-        Master sasha2 = new Master();
-        sasha2.setName("Махмуд");
-        sasha2.addServicesAndTimeSlots(
-                Arrays.asList(Services.BORODA),
-                Arrays.asList("08:00", "13:00", "17:00")
-        );
-        masters.add(sasha2);
-
-        Master sasha3 = new Master();
-        sasha3.setName("Ахмаджан");
-        sasha3.addServicesAndTimeSlots(
-                Arrays.asList(Services.BORODA),
-                Arrays.asList("15:00", "16:00", "18:00")
-        );
-        masters.add(sasha3);
     }
 }
