@@ -50,6 +50,7 @@ public class BotLogicImpl implements BotLogic {
 
         if (message.equals("USER")) {
             user.setAdmin(false);
+            response.setMessage("Вы вышли из режима администратора.");
         }
         else if (user.isAdmin()) {
             adminService.processAdminMessage(request, user);
@@ -58,9 +59,11 @@ public class BotLogicImpl implements BotLogic {
 
         if (message.equals(ADMIN_PASSWORD)) {
             user.setAdmin(true);
+            response.setMessage("Вы перешли в режим администратора.");
         }
         if (message.equals("USER")) {
             user.setAdmin(false);
+            response.setMessage("Вы вышли из режима администратора.");
         }
         else if (message.equals("HOME")) {
             response.setMessage(GREETING);
