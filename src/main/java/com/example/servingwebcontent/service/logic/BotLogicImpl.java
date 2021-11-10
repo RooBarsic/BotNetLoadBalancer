@@ -3,11 +3,13 @@ package com.example.servingwebcontent.service.logic;
 import com.example.message.BotNetRequest;
 import com.example.message.BotNetResponse;
 import com.example.message.data.BotNetButton2;
+import com.example.servingwebcontent.components.TokenStorage;
 import com.example.servingwebcontent.service.ResponseService;
 import com.example.servingwebcontent.service.logic.data.Master;
 import com.example.servingwebcontent.service.logic.data.BarberShopServise;
 import com.example.servingwebcontent.service.logic.data.Status;
 import com.example.servingwebcontent.service.logic.data.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -20,14 +22,18 @@ public class BotLogicImpl implements BotLogic {
     private final Map<String, User> userById;
     private final MastersService mastersService;
     private final AdminService adminService;
+    private final String ADMIN_PASSWORD;
 
+    @Autowired
     BotLogicImpl(final ResponseService responseService,
                  final MastersService mastersService,
-                 final AdminService adminService) {
+                 final AdminService adminService,
+                 final TokenStorage tokenStorage) {
         this.responseService = responseService;
         this.userById = new HashMap<>();
         this.mastersService = mastersService;
         this.adminService = adminService;
+        ADMIN_PASSWORD = "ADMIN-" + tokenStorage.getTokens("ADMIN_PASSWORD");
     }
 
     @Override
@@ -50,7 +56,7 @@ public class BotLogicImpl implements BotLogic {
             return true;
         }
 
-        if (message.equals("ADMIN")) {
+        if (message.equals(ADMIN_PASSWORD)) {
             user.setAdmin(true);
         }
         if (message.equals("USER")) {

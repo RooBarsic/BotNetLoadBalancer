@@ -37,6 +37,7 @@ public class TokenStorage {
     private String AWS_DB_W3_ROOT_PASSWORD = "null";
     private String APP_HEROKU_URL = "null";
     private String REQUEST_HANDLER_CONTROLLER_URL = "null";
+    private String ADMIN_PASSWORD = "null";
 
     public TokenStorage() {
         System.out.println(" ---- reading tokens ");
@@ -91,6 +92,7 @@ public class TokenStorage {
                         "AWS_DB_W3_ROOT_USER = " + AWS_DB_W3_ROOT_USER + "\n" +
                         "AWS_DB_W3_ROOT_PASSWORD = " + AWS_DB_W3_ROOT_PASSWORD + "\n" +
                         "REQUEST_HANDLER_CONTROLLER_URL = " + REQUEST_HANDLER_CONTROLLER_URL + "\n" +
+                        "ADMIN_PASSWORD = " + ADMIN_PASSWORD + "\n" +
                         "APP_HEROKU_URL = " + APP_HEROKU_URL + "\n\n");
             }
             catch (FileNotFoundException e) {
@@ -126,6 +128,8 @@ public class TokenStorage {
             AWS_DB_W3_ROOT_PASSWORD = System.getenv("AWS_DB_W3_ROOT_PASSWORD");
 
             REQUEST_HANDLER_CONTROLLER_URL = System.getenv("REQUEST_HANDLER_CONTROLLER_URL");
+
+            ADMIN_PASSWORD = System.getenv("ADMIN_PASSWORD");
 
             APP_HEROKU_URL = System.getenv("APP_HEROKU_URL");
 
@@ -188,6 +192,9 @@ public class TokenStorage {
                 break;
             case "REQUEST_HANDLER_CONTROLLER_URL" :
                 REQUEST_HANDLER_CONTROLLER_URL = tokenValue;
+                break;
+            case "ADMIN_PASSWORD" :
+                ADMIN_PASSWORD = tokenValue;
                 break;
             case "APP_HEROKU_URL" :
                 APP_HEROKU_URL = tokenValue;
@@ -254,6 +261,9 @@ public class TokenStorage {
             case "REQUEST_HANDLER_CONTROLLER_URL" :
                 temp = REQUEST_HANDLER_CONTROLLER_URL;
                 break;
+            case "ADMIN_PASSWORD" :
+                temp = ADMIN_PASSWORD;
+                break;
             case "APP_HEROKU_URL" :
                 temp = APP_HEROKU_URL;
                 break;
@@ -283,6 +293,8 @@ public class TokenStorage {
         System.out.println("token :::: AWS_DB_W3_ROOT_PASSWORD = " + AWS_DB_W3_ROOT_PASSWORD);
 
         System.out.println("token :::: REQUEST_HANDLER_CONTROLLER_URL = " + REQUEST_HANDLER_CONTROLLER_URL);
+
+        System.out.println("token :::: ADMIN_PASSWORD = " + ADMIN_PASSWORD);
 
         System.out.println("token :::: APP_HEROKU_URL = " + APP_HEROKU_URL);
     }
