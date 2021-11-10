@@ -11,6 +11,7 @@ public class User {
     private Status status;
     private Order defaultOrder;
     private List<Order> activeOrders = new ArrayList<>();
+    private boolean isAdmin = false;
 
     public User(UiPlatform uiPlatform, String id) {
         this.platform = uiPlatform;
@@ -68,5 +69,13 @@ public class User {
 
     public void setDefaultOrder(Order defaultOrder) {
         this.defaultOrder = defaultOrder;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 }
