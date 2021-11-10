@@ -61,7 +61,7 @@ public class BotLogicImpl implements BotLogic {
             user.setAdmin(true);
             response.setMessage("Вы перешли в режим администратора.");
         }
-        if (message.equals("USER")) {
+        else if (message.equals("USER")) {
             user.setAdmin(false);
             response.setMessage("Вы вышли из режима администратора.");
         }
