@@ -42,13 +42,19 @@ public class BotLogicImpl implements BotLogic {
 
         User user = getUserOrDefault(request);
 
-        if (user.isAdmin()) {
+        if (message.equals("USER")) {
+            user.setAdmin(false);
+        }
+        else if (user.isAdmin()) {
             adminService.processAdminMessage(request, user);
             return true;
         }
 
         if (message.equals("ADMIN")) {
             user.setAdmin(true);
+        }
+        if (message.equals("USER")) {
+            user.setAdmin(false);
         }
         else if (message.equals("HOME")) {
             response.setMessage(GREETING);
