@@ -19,12 +19,15 @@ public class BotLogicImpl implements BotLogic {
     private final ResponseService responseService;
     private final Map<String, User> userById;
     private final MastersService mastersService;
+    private final AdminService adminService;
 
     BotLogicImpl(final ResponseService responseService,
-                 final MastersService mastersService) {
+                 final MastersService mastersService,
+                 final AdminService adminService) {
         this.responseService = responseService;
         this.userById = new HashMap<>();
         this.mastersService = mastersService;
+        this.adminService = adminService;
     }
 
     @Override
@@ -39,7 +42,21 @@ public class BotLogicImpl implements BotLogic {
 
         User user = getUserOrDefault(request);
 
-        if (message.equals("HOME")) {
+        if (message.equals("USER")) {
+            user.setAdmin(false);
+        }
+        else if (user.isAdmin()) {
+            adminService.processAdminMessage(request, user);
+            return true;
+        }
+
+        if (message.equals("ADMIN")) {
+            user.setAdmin(true);
+        }
+        if (message.equals("USER")) {
+            user.setAdmin(false);
+        }
+        else if (message.equals("HOME")) {
             response.setMessage(GREETING);
             response.addButton(new BotNetButton2("выбор услуги"));
             response.addButton(new BotNetButton2("Мои записи"));

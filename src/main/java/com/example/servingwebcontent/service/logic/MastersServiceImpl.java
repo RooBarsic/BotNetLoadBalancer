@@ -106,6 +106,11 @@ public class MastersServiceImpl implements MastersService {
         return availableMasters;
     }
 
+    @Override
+    public void addMaster(Master master) {
+        masters.add(master);
+    }
+
     private void addDefaultMasters() {
         Master abdullo = new Master();
         abdullo.setName("Абдулло");
