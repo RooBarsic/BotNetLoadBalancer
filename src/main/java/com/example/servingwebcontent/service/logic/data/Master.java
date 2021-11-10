@@ -1,5 +1,7 @@
 package com.example.servingwebcontent.service.logic.data;
 
+import com.example.servingwebcontent.service.logic.MathUtils;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -58,9 +60,17 @@ public class Master {
      * @param timeslot
      * @return - true если таймслот найде. false - если такого таймлоста у нас нет.
      */
-    public boolean blockTimeSlot(String timeslot) {
+    public boolean blockTimeSlot(String timeslot, BarberShopServise servise) {
         if (timeSlots.contains(timeslot)) {
             timeSlots.remove(timeslot);
+            if (servise == BarberShopServise.BORODA_AND_STRIZKA) {
+                timeslot = MathUtils.addMinutes20(timeslot);
+                if (timeslot.contains(timeslot)) {
+                    timeSlots.remove(timeslot);
+                    return true;
+                }
+                return false;
+            }
             return true;
         }
         return false;

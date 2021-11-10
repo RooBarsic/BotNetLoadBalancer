@@ -48,7 +48,7 @@ class MasterTest {
         assertEquals(expected, actual);
 
         assertTrue(master.hasTimeSlot("09:00"));
-        master.blockTimeSlot("09:00");
+        master.blockTimeSlot("09:00", BarberShopServise.BORODA);
         assertFalse(master.hasTimeSlot("09:00"));
 
         expected = Arrays.asList("11:00");

@@ -79,8 +79,8 @@ public class MastersServiceImpl implements MastersService {
     }
 
     @Override
-    public Master blockTimeSlotForMaster(Master master, String timeSlot) {
-        master.blockTimeSlot(timeSlot);
+    public Master blockTimeSlotForMaster(Master master, String timeSlot, BarberShopServise servise) {
+        master.blockTimeSlot(timeSlot, servise);
         return master;
     }
 

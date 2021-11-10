@@ -102,7 +102,7 @@ public class BotLogicImpl implements BotLogic {
                         response.addButton(new BotNetButton2("HOME"));
                         user.setStatus(Status.REQUIRED_SERVICE);
                     } else {
-                           user.getDefaultOrder().setServices(service);
+                        user.getDefaultOrder().setServices(service);
                         response.setMessage("Вы выбрали услугу " + service.toString() + "\n" +
                                 "Пожалуйста выберите мастера:");
                         response.addButton(new BotNetButton2("Любой мастер"));
@@ -193,7 +193,7 @@ public class BotLogicImpl implements BotLogic {
                             response.setMessage("Вы выбрали время " + timeSlot + "\n" +
                                     "Пожалуйста отправьте нам ваше имя для оформления брони");
                         }
-                        user.getDefaultOrder().getMaster().blockTimeSlot(timeSlot);
+                        user.getDefaultOrder().getMaster().blockTimeSlot(timeSlot, user.getDefaultOrder().getServices());
                         user.getDefaultOrder().setDate(timeSlot);
                         response.addButton(new BotNetButton2("HOME"));
                         user.setStatus(Status.REQUIRED_USER_NAME);

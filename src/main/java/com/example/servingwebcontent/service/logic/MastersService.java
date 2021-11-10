@@ -13,7 +13,7 @@ public interface MastersService {
     Master getMasterByNameFomList(List<Master> masters, String masterName);
     List<String> getAvailableTimeSlots(List<Master> masters, BarberShopServise servise);
     List<String> getAvailableTimeSlots(Master master, BarberShopServise servise);
-    Master blockTimeSlotForMaster(Master master, String timeSlot);
+    Master blockTimeSlotForMaster(Master master, String timeSlot, BarberShopServise servise);
     Master getMasterByServiceAndTimeSlot(BarberShopServise barberShopServise, String timeSlot);
     List<Master> getMastersByMultipleServices(List<BarberShopServise> servises);
 }
