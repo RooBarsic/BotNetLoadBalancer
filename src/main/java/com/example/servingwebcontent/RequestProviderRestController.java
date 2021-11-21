@@ -6,25 +6,16 @@ import com.example.message.data.BotNetButton;
 import com.example.message.data.UiPlatform;
 import com.example.servingwebcontent.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-import java.time.Duration;
 import java.util.List;
 
 @RestController
 public class RequestProviderRestController {
     private final RequestService requestService;
-    private final RestTemplate restTemplate;
 
     @Autowired
-    RequestProviderRestController(RequestService requestService,
-                                  final RestTemplateBuilder restTemplateBuilder) {
+    RequestProviderRestController(RequestService requestService) {
         this.requestService = requestService;
-        restTemplate = restTemplateBuilder
-                .setConnectTimeout(Duration.ofSeconds(500))
-                .setReadTimeout(Duration.ofSeconds(500))
-                .build();
     }
 
     @RequestMapping(value = "/requests", method = RequestMethod.GET)
