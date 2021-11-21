@@ -7,14 +7,25 @@ import com.example.message.data.UiPlatform;
 import com.example.servingwebcontent.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.List;
+import java.util.Scanner;
 
 @RestController
 public class RequestProviderRestController {
@@ -36,16 +47,42 @@ public class RequestProviderRestController {
         System.out.println("Got Hello request");
         String ans = openPresentation();
         System.out.println(ans);
-        return "<iframe src=\"//docs.google.com/gview?url=https://vk.com/doc415938349_622136573&embedded=true\" style=\"width:600px; height:500px;\" frameborder=\"0\"></iframe>\n";
-//        return "<iframe src=\"https://docs.google.com/presentation/d/17fH2o1Yv5MwqU5kYI69yo8GRmcDZ_U1l/edit#slide=1\" />";
+        return "hello";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/file2")
+    public ResponseEntity<byte[]> getPdf() throws IOException {
+//        final String filePath = pdfFilePathFinder.find(id);
+
+        final byte[] pdfBytes = Files.readAllBytes(Path.of("present_2.pptx"));
+
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType("application/pdf"));
+        headers.setContentDispositionFormData("attachment", null);
+        headers.setCacheControl("no-cache");
+
+        return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/file", method = RequestMethod.GET)
-    public File helloFile() {
+    @ResponseBody
+    public String helloFile() throws FileNotFoundException {
+//        Resource file = new ;
+//        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+//                "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+//
         System.out.println("Got Hello request");
         String ans = openPresentation();
         System.out.println(ans);
-        return new File("present_2.pptx");
+        StringBuilder stringBuilder = new StringBuilder("");
+        Scanner scaner = new Scanner(new File("present_2.pptx"));
+        while (scaner.hasNextLine()) {
+            String line = scaner.nextLine();
+            if (line.length() > 0) {
+                stringBuilder.append(line);
+            }
+        }
+        return stringBuilder.toString();
     }
 
 

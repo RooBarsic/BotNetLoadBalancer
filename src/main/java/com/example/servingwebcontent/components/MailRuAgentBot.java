@@ -20,13 +20,15 @@ public class MailRuAgentBot implements BotNetBot {
     MailRuAgentBot(final TokenStorage tokenStorage,
                 final RequestService requestService) {
         System.out.println("##### Starting MailRuAgent bot ....... ");
-        final String BOT_NAME = tokenStorage.getTokens(BOT_NAME_HANDLE);
-        final String BOT_TOKEN = tokenStorage.getTokens(BOT_TOKEN_HANDLE);
-        mailRuAgentBotRequestListener = new MailRuAgentBotRequestListener(BOT_TOKEN, requestService);
-        mailRuAgentBotRequestListener.startBot();
+//        final String BOT_NAME = tokenStorage.getTokens(BOT_NAME_HANDLE);
+//        final String BOT_TOKEN = tokenStorage.getTokens(BOT_TOKEN_HANDLE);
+//        mailRuAgentBotRequestListener = new MailRuAgentBotRequestListener(BOT_TOKEN, requestService);
+//        mailRuAgentBotRequestListener.startBot();
+//
+//        mailRuBotResponseSender = (MailRuAgentBotRequestSender) mailRuAgentBotRequestListener.getBotResponseSender();
 
-        mailRuBotResponseSender = (MailRuAgentBotRequestSender) mailRuAgentBotRequestListener.getBotResponseSender();
-
+        mailRuAgentBotRequestListener = null;
+        mailRuBotResponseSender = null;
         System.out.println("##### MailRuAgent bot - started ....... ");
     }
 
