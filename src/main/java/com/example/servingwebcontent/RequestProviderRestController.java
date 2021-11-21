@@ -54,7 +54,9 @@ public class RequestProviderRestController {
     public ResponseEntity<byte[]> getPdf() throws IOException {
 //        final String filePath = pdfFilePathFinder.find(id);
 
-        final byte[] pdfBytes = Files.readAllBytes(Path.of("present_2.pptx"));
+        Path pp = (new File("present_2.pptx")).toPath();
+
+        final byte[] pdfBytes = Files.readAllBytes(pp);
 
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));
