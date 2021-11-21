@@ -8,9 +8,12 @@ import java.util.stream.Collectors;
 public class Master {
     private String name = "null";
     private Set<String> timeSlots = new HashSet<>();
+    private String curDate;
+    private CalendarSlots calendarSlots = new CalendarSlots();
     private Set<BarberShopServise> services = new HashSet<>();
 
     public String getName() {
+        curDate = "19.11.2021";
         return name;
     }
 
@@ -27,16 +30,16 @@ public class Master {
     }
 
     public void addTimeSlots(List<String> timeSlots) {
-        this.timeSlots.addAll(timeSlots);
+        this.calendarSlots.setDefaultSlots(timeSlots);
     }
 
     public boolean hasTimeSlot(String timeSlot) {
-        return timeSlots.contains(timeSlot);
+        return calendarSlots.hasTimeSlot(curDate, timeSlot);
     }
 
     public void addServicesAndTimeSlots(List<BarberShopServise> services, List<String> timeSlots) {
         this.services.addAll(services);
-        this.timeSlots.addAll(timeSlots);
+        this.calendarSlots.setDefaultSlots(timeSlots);
     }
 
     public boolean hasService(BarberShopServise service) {
@@ -61,12 +64,12 @@ public class Master {
      * @return - true если таймслот найде. false - если такого таймлоста у нас нет.
      */
     public boolean blockTimeSlot(String timeslot, BarberShopServise servise) {
-        if (timeSlots.contains(timeslot)) {
-            timeSlots.remove(timeslot);
+        if (calendarSlots.hasTimeSlot(curDate, timeslot)) {
+            calendarSlots.blockTimeSlot(curDate, timeslot);
             if (servise == BarberShopServise.BORODA_AND_STRIZKA) {
                 timeslot = MathUtils.addMinutes20(timeslot);
-                if (timeslot.contains(timeslot)) {
-                    timeSlots.remove(timeslot);
+                if (calendarSlots.hasTimeSlot(curDate, timeslot)) {
+                    calendarSlots.blockTimeSlot(curDate, timeslot);
                     return true;
                 }
                 return false;
@@ -77,6 +80,10 @@ public class Master {
     }
 
     public List<String> getTimeSlots() {
-        return timeSlots.stream().sorted(String::compareTo).collect(Collectors.toList());
+        return calendarSlots
+                .getTimeSlotsByDay(curDate)
+                .stream()
+                .sorted(String::compareTo)
+                .collect(Collectors.toList());
     }
 }
