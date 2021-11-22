@@ -67,7 +67,7 @@ public class BotLogicImpl implements BotLogic {
         }
         else if (message.equals("HOME")) {
             response.setMessage(GREETING);
-            response.addButton(new BotNetButton2("выбор услуги"));
+            response.addButton(new BotNetButton2("Выбор услуги"));
             response.addButton(new BotNetButton2("Мои записи"));
             response.addButton(new BotNetButton2("Инфо"));
             user.setStatus(Status.REQUIRED_ACTION);
@@ -77,7 +77,7 @@ public class BotLogicImpl implements BotLogic {
             switch (user.getStatus()) {
                 case NEW_USER:
                     response.setMessage(GREETING);
-                    response.addButton(new BotNetButton2("выбор услуги"));
+                    response.addButton(new BotNetButton2("Выбор услуги"));
                     response.addButton(new BotNetButton2("Мои записи"));
                     response.addButton(new BotNetButton2("Инфо"));
                     user.setStatus(Status.REQUIRED_ACTION);
@@ -96,21 +96,21 @@ public class BotLogicImpl implements BotLogic {
                             break;
                         case "Мои записи":
                             response.setMessage("Ваши записи :\n" + user.getMyActiveOrders());
-                            response.addButton(new BotNetButton2("выбор услуги"));
+                            response.addButton(new BotNetButton2("Выбор услуги"));
                             response.addButton(new BotNetButton2("Мои записи"));
                             response.addButton(new BotNetButton2("Инфо"));
                             user.setStatus(Status.REQUIRED_ACTION);
                             break;
                         case "Инфо":
                             response.setMessage(GREETING);
-                            response.addButton(new BotNetButton2("выбор услуги"));
+                            response.addButton(new BotNetButton2("Выбор услуги"));
                             response.addButton(new BotNetButton2("Мои записи"));
                             response.addButton(new BotNetButton2("Инфо"));
                             user.setStatus(Status.REQUIRED_ACTION);
                             break;
                         default:
                             response.setMessage("Я вас не понял. Пожалуйста выберите одно из этих кнопок:");
-                            response.addButton(new BotNetButton2("выбор услуги"));
+                            response.addButton(new BotNetButton2("Выбор услуги"));
                             response.addButton(new BotNetButton2("Мои записи"));
                             response.addButton(new BotNetButton2("Инфо"));
                             user.setStatus(Status.REQUIRED_ACTION);
@@ -283,7 +283,7 @@ public class BotLogicImpl implements BotLogic {
                     break;
                 default:
                     response.setMessage(GREETING);
-                    response.addButton(new BotNetButton2("выбор услуги"));
+                    response.addButton(new BotNetButton2("Выбор услуги"));
                     response.addButton(new BotNetButton2("Мои записи"));
                     response.addButton(new BotNetButton2("Инфо"));
                     user.setStatus(Status.REQUIRED_ACTION);
