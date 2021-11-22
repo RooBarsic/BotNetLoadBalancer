@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
+import com.example.servingwebcontent.service.logic.MastersServiceImpl;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -89,6 +91,13 @@ class MasterTest {
                 "Телефон клиента : 81234567890\n";
         actual = order.getOrderInfo();
         assertEquals(expected, actual);
-
+    }
+    
+    @Test
+    void canSetAndModifyTimeSlotsForDoubleServise() {
+        List<String> expected = Arrays.asList("12:00", "15:00");
+        master.addServicesAndTimeSlots(Arrays.asList(BarberShopServise.BORODA, BarberShopServise.STRIZKA),Arrays.asList("09:00","12:00", "10:00", "15:00"));
+        List<String> actual = masterServ.getAvailableTimeSlots(master, BarberShopServise.BORODA_AND_STRIZKA);
+        assertEquals(expected, actual);
     }
 }
