@@ -5,6 +5,7 @@ public class Order {
     private String userName;
     private String phone;
     private BarberShopServise barberShopServise;
+    private String timeSlot;
     private String date;
 
     Order() {
@@ -12,6 +13,7 @@ public class Order {
         userName = "null";
         phone = "null";
         barberShopServise = BarberShopServise.NONE;
+        timeSlot = "null";
         date = "null";
     }
 
@@ -19,7 +21,8 @@ public class Order {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("\nУслуга : ").append(getServices().toString())
                 .append("\nМастер : ").append(getMaster().getName())
-                .append("\nВремя : ").append(getDate())
+                .append("\nДата :").append(date)
+                .append("\nВремя : ").append(getTimeSlot())
                 .append("\nИмя клента : ").append(getUserName())
                 .append("\nТелефон клиента : ").append(getPhone())
                 .append("\n");
@@ -56,6 +59,14 @@ public class Order {
 
     public void setServices(BarberShopServise barberShopServise) {
         this.barberShopServise = barberShopServise;
+    }
+
+    public String getTimeSlot() {
+        return timeSlot;
+    }
+
+    public void setTimeSlot(String timeSlot) {
+        this.timeSlot = timeSlot;
     }
 
     public String getDate() {

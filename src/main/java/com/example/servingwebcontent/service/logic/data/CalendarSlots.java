@@ -10,16 +10,7 @@ public class CalendarSlots {
         defaultSlots = new HashSet<>();
         slotsByDay = new HashMap<>();
     }
-/*
-Дана строка (возможно, пустая), состоящая из букв A-Z:
-AAAABBBCCXYZDDDDEEEFFFAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBB
-Нужно написать функцию RLE, которая на выходе даст строку вида:
-A4B3C2XYZD4E3F3A6B28
-И сгенерирует ошибку, если на вход пришла невалидная строка.
-Пояснения:
-Если символ встречается 1 раз, он остается без изменений;
-Если символ повторяется более 1 раза, к нему добавляется количество повторений.
- */
+
     public void setDefaultSlots(List<String> timeSlots) {
         defaultSlots.clear();
         defaultSlots.addAll(timeSlots);
@@ -27,8 +18,11 @@ A4B3C2XYZD4E3F3A6B28
 
     public Set<String> getTimeSlotsByDay(final String date) {
         Set<String> timeSlots = slotsByDay.getOrDefault(date, null);
-        if (timeSlots != null) {
-            slotsByDay.put(date, timeSlots = new HashSet<>(defaultSlots));
+        if (timeSlots == null) {
+            slotsByDay.put(date, timeSlots = new HashSet<>());
+            for (String slot : defaultSlots) {
+                timeSlots.add(slot);
+            }
         }
         return timeSlots;
     }

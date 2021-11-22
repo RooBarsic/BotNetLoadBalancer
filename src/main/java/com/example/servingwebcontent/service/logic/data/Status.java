@@ -4,6 +4,7 @@ public enum Status {
     NEW_USER,
 //    REQUIRED_LOCATION,
     REQUIRED_ACTION, //выбор услуги
+    REQUIRED_DATE, //выбор даты
     REQUIRED_SERVICE, //выбор услуги
     REQUIRED_MASTER,  //выбор мастера
     REQUIRED_TIME_SLOT, //выбор времени
