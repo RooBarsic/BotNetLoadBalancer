@@ -10,7 +10,7 @@ import java.util.*;
 public class MastersServiceImpl implements MastersService {
     private final List<Master> masters;
 
-    MastersServiceImpl() {
+    public MastersServiceImpl() {
         masters = new ArrayList<>();
 
         addDefaultMasters();
