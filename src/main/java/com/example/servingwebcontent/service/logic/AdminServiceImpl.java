@@ -66,7 +66,7 @@ public class AdminServiceImpl implements AdminService {
                 }
                 stringBuilder.append("\nтаймслоты : ");
 
-                for (String timeSlot : master.getTimeSlots()) {
+                for (String timeSlot : master.getDefaultTimeSlots()) {
                     stringBuilder.append(timeSlot)
                             .append(", ");
                 }

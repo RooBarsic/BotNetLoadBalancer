@@ -33,8 +33,8 @@ public class Master {
         this.calendarSlots.setDefaultSlots(timeSlots);
     }
 
-    public boolean hasTimeSlot(String timeSlot) {
-        return calendarSlots.hasTimeSlot(curDate, timeSlot);
+    public boolean hasTimeSlot(String date, String timeSlot) {
+        return calendarSlots.hasTimeSlot(date, timeSlot);
     }
 
     public void addServicesAndTimeSlots(List<BarberShopServise> services, List<String> timeSlots) {
@@ -63,13 +63,13 @@ public class Master {
      * @param timeslot
      * @return - true если таймслот найде. false - если такого таймлоста у нас нет.
      */
-    public boolean blockTimeSlot(String timeslot, BarberShopServise servise) {
-        if (calendarSlots.hasTimeSlot(curDate, timeslot)) {
-            calendarSlots.blockTimeSlot(curDate, timeslot);
+    public boolean blockTimeSlot(String date, String timeslot, BarberShopServise servise) {
+        if (calendarSlots.hasTimeSlot(date, timeslot)) {
+            calendarSlots.blockTimeSlot(date, timeslot);
             if (servise == BarberShopServise.BORODA_AND_STRIZKA) {
                 timeslot = MathUtils.addMinutes20(timeslot);
-                if (calendarSlots.hasTimeSlot(curDate, timeslot)) {
-                    calendarSlots.blockTimeSlot(curDate, timeslot);
+                if (calendarSlots.hasTimeSlot(date, timeslot)) {
+                    calendarSlots.blockTimeSlot(date, timeslot);
                     return true;
                 }
                 return false;
@@ -79,11 +79,20 @@ public class Master {
         return false;
     }
 
-    public List<String> getTimeSlots() {
+    public List<String> getTimeSlots(String date) {
         return calendarSlots
-                .getTimeSlotsByDay(curDate)
+                .getTimeSlotsByDay(date)
                 .stream()
                 .sorted(String::compareTo)
                 .collect(Collectors.toList());
     }
+
+    public List<String> getDefaultTimeSlots() {
+        return calendarSlots
+                .getTimeSlotsByDay("")
+                .stream()
+                .sorted(String::compareTo)
+                .collect(Collectors.toList());
+    }
+
 }

@@ -48,10 +48,10 @@ public class MastersServiceImpl implements MastersService {
     }
 
     @Override
-    public List<String> getAvailableTimeSlots(List<Master> masters, BarberShopServise service) {
+    public List<String> getAvailableTimeSlots(String date, List<Master> masters, BarberShopServise service) {
         Set<String> availableTimeSlots = new HashSet<>();
         for (Master master1 : masters) {
-            availableTimeSlots.addAll(getAvailableTimeSlots(master1, service));
+            availableTimeSlots.addAll(getAvailableTimeSlots(date, master1, service));
         }
         List<String> openTimeSlots = new ArrayList<>(availableTimeSlots);
         openTimeSlots.sort(String::compareTo);
@@ -59,9 +59,9 @@ public class MastersServiceImpl implements MastersService {
     }
 
     @Override
-    public List<String> getAvailableTimeSlots(Master masters, BarberShopServise servise) {
+    public List<String> getAvailableTimeSlots(String date, Master master, BarberShopServise servise) {
         if (servise == BarberShopServise.BORODA_AND_STRIZKA) {
-            List<String> timeSlots = masters.getTimeSlots();
+            List<String> timeSlots = master.getTimeSlots(date);
             timeSlots.sort(String::compareTo);
             List<String> approvedTimeSlots = new ArrayList<>();
             for (int i = 1; i < timeSlots.size(); i++) {
@@ -74,21 +74,21 @@ public class MastersServiceImpl implements MastersService {
             return approvedTimeSlots;
         }
         else {
-            return masters.getTimeSlots();
+            return master.getTimeSlots(date);
         }
     }
 
     @Override
-    public Master blockTimeSlotForMaster(Master master, String timeSlot, BarberShopServise servise) {
-        master.blockTimeSlot(timeSlot, servise);
+    public Master blockTimeSlotForMaster(String date, Master master, String timeSlot, BarberShopServise servise) {
+        master.blockTimeSlot(date, timeSlot, servise);
         return master;
     }
 
     @Override
-    public Master getMasterByServiceAndTimeSlot(BarberShopServise barberShopServise, String timeSlot) {
+    public Master getMasterByServiceAndTimeSlot(String date, BarberShopServise barberShopServise, String timeSlot) {
         List<Master> mastersByService = getAllMastersByService(barberShopServise);
         for (Master master : mastersByService) {
-            if (master.hasTimeSlot(timeSlot)) {
+            if (master.hasTimeSlot(date, timeSlot)) {
                 return master;
             }
         }
