@@ -109,7 +109,7 @@ public class BotLogicImpl implements BotLogic {
                             user.setStatus(Status.REQUIRED_ACTION);
                             break;
                         default:
-                            response.setMessage("Я вас не понял. Пожалуйста выберите одно из этих кнопок:");
+                            response.setMessage("Я вас не понял. \nПожалуйста выберите одно из этих кнопок:");
                             response.addButton(new BotNetButton2("Выбор услуги"));
                             response.addButton(new BotNetButton2("Мои записи"));
                             response.addButton(new BotNetButton2("Инфо"));
@@ -121,7 +121,7 @@ public class BotLogicImpl implements BotLogic {
                     BarberShopServise service = BarberShopServise.getServiceOrNull(message);
                     if (service == null) {
                         response.setMessage("Я вас не понял.\n" +
-                                "Пожалуйста выберите одно из услугу:");
+                                "\nПожалуйста выберите одно из услугу:");
                         response.addButton(new BotNetButton2(BarberShopServise.BORODA.toString()));
                         response.addButton(new BotNetButton2(BarberShopServise.STRIZKA.toString()));
                         response.setNewButtonsLine();
@@ -130,7 +130,7 @@ public class BotLogicImpl implements BotLogic {
                     } else {
                         user.getDefaultOrder().setServices(service);
                         response.setMessage("Вы выбрали услугу " + service.toString() + "\n" +
-                                        "Пожалуйста введите дату посешения салона, в формате dd.mm.yyyy\n" +
+                                        "\nПожалуйста введите дату посешения салона, в формате dd.mm.yyyy\n" +
                                 "Например 18.12.2021");
                         response.addButton(new BotNetButton2("HOME"));
                         user.setStatus(Status.REQUIRED_DATE);
@@ -139,8 +139,8 @@ public class BotLogicImpl implements BotLogic {
                 case REQUIRED_DATE:
                     if (isCorrectDate(request.getMessage())) {
                         user.getDefaultOrder().setDate(request.getMessage());
-                        response.setMessage("Вы ввели дату" + request.getMessage()+ "\n" +
-                                "Пожалуйста выберите мастера:");
+                        response.setMessage("Вы ввели дату " + request.getMessage()+ "\n" +
+                                "\nПожалуйста выберите мастера:");
                         response.addButton(new BotNetButton2("Любой мастер"));
                         mastersService.getAllMastersByService(user.getDefaultOrder().getServices())
                                 .forEach(master -> {
@@ -151,7 +151,8 @@ public class BotLogicImpl implements BotLogic {
                         user.setStatus(Status.REQUIRED_MASTER);
                     }
                     else {
-                        response.setMessage("Я вас не понял. Пожалуйста выберите корректную дату в формате dd.mm.yyyy\n" +
+                        response.setMessage("Я вас не понял. " +
+                                "\nПожалуйста выберите корректную дату в формате dd.mm.yyyy\n" +
                                 "Например 18.12.2021");
                         response.addButton(new BotNetButton2("HOME"));
                         user.setStatus(Status.REQUIRED_DATE);
@@ -176,7 +177,7 @@ public class BotLogicImpl implements BotLogic {
                         }
                         else {
                             response.setMessage("Я вас не понимаю.\n" +
-                                    "Пожалуйста выберите одно из мастеров:");
+                                    "\nПожалуйста выберите одно из мастеров:");
                             response.addButton(new BotNetButton2("Любой мастер"));
                             for (Master m : mastersService.getAllMastersByService(user.getDefaultOrder().getServices())) {
                                 response.addButton(new BotNetButton2(m.getName()));
@@ -188,7 +189,7 @@ public class BotLogicImpl implements BotLogic {
                     } else {
                         user.getDefaultOrder().setMaster(master);
                         response.setMessage("Вы выбрали мастера " + master.getName() + "\n" +
-                                "Пожалуйста выберите время:");
+                                "\nПожалуйста выберите время:");
                         for (String time : mastersService.getAvailableTimeSlots(user.getDefaultOrder().getDate(), master, user.getDefaultOrder().getServices())) {
                             response.addButton(new BotNetButton2(time));
                         }
@@ -218,7 +219,7 @@ public class BotLogicImpl implements BotLogic {
                     }
                     if (timeSlot == null) {
                         response.setMessage("Я вас не понял.\n" +
-                                "Пожалуйста выберите время:");
+                                "\nПожалуйста выберите время:");
                         for (String time : masterTimeSlots) {
                             response.addButton(new BotNetButton2(time));
                         }
@@ -231,11 +232,11 @@ public class BotLogicImpl implements BotLogic {
                             user.getDefaultOrder().setMaster(master1);
                             response.setMessage("Вы выбрали время " + timeSlot + "\n" +
                                     "Вашем мастером будет : " + master1.getName() + "\n" +
-                                    "Пожалуйста отправьте нам ваше имя для оформления брони");
+                                    "\nПожалуйста отправьте нам ваше имя для оформления брони");
                         }
                         else {
                             response.setMessage("Вы выбрали время " + timeSlot + "\n" +
-                                    "Пожалуйста отправьте нам ваше имя для оформления брони");
+                                    "\nПожалуйста отправьте нам ваше имя для оформления брони");
                         }
                         user.getDefaultOrder().getMaster().blockTimeSlot(user.getDefaultOrder().getDate(), timeSlot, user.getDefaultOrder().getServices());
                         user.getDefaultOrder().setTimeSlot(timeSlot);
@@ -246,7 +247,7 @@ public class BotLogicImpl implements BotLogic {
                 case REQUIRED_USER_NAME:
                     user.getDefaultOrder().setUserName(message);
                     response.setMessage("Приятно познакомиться " + message + "!\n" +
-                            "Пожалуйста отправьте нам номер телефона для оформления брони");
+                            "\nПожалуйста отправьте нам номер телефона для оформления брони");
                     response.addButton(new BotNetButton2("HOME"));
                     user.setStatus(Status.REQUIRED_USER_PHONE);
                     break;
