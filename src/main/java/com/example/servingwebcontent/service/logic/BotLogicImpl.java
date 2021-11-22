@@ -84,7 +84,7 @@ public class BotLogicImpl implements BotLogic {
                     break;
                 case REQUIRED_ACTION:
                     switch (message) {
-                        case "выбор услуги":
+                        case "Выбор услуги":
                             response.setMessage("Выберите услугу");
                             response.addButton(new BotNetButton2(BarberShopServise.BORODA_AND_STRIZKA.toString()));
                             response.setNewButtonsLine();
