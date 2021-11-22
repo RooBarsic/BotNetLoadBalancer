@@ -1,5 +1,7 @@
 package com.example.servingwebcontent.service.logic.data;
 
+import com.example.servingwebcontent.service.logic.MastersService;
+import com.example.servingwebcontent.service.logic.MastersServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -93,10 +95,11 @@ class MasterTest {
     
     @Test
     void canSetAndModifyTimeSlotsForDoubleServise() {
-//        List<String> expected = Arrays.asList("12:00", "15:00");
-//        master.addServicesAndTimeSlots(Arrays.asList(BarberShopServise.BORODA, BarberShopServise.STRIZKA),Arrays.asList("09:00","12:00", "10:00", "15:00"));
-//        MastersService masterServ = new MastersServiceImpl();
-//        List<String> actual = masterServ.getAvailableTimeSlots(master, BarberShopServise.BORODA_AND_STRIZKA);
-//        assertEquals(expected, actual);
+        List<String> expected = Arrays.asList("09:00", "12:00");
+        master.addServicesAndTimeSlots(Arrays.asList(BarberShopServise.BORODA, BarberShopServise.STRIZKA, BarberShopServise.BORODA_AND_STRIZKA),Arrays.asList("09:00","09:20", "12:00", "12:20"));
+        MastersService masterServ = new MastersServiceImpl();
+        masterServ.addMaster(master);
+        List<String> actual = masterServ.getAvailableTimeSlots("11.12.2021",master, BarberShopServise.BORODA_AND_STRIZKA);
+        assertEquals(expected, actual);
     }
 }
