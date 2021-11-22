@@ -8,20 +8,20 @@ public enum BarberShopServise {
 
     public String toString() {
         switch (this) {
-            case STRIZKA: return "стрижка";
-            case BORODA: return "борода";
+            case STRIZKA: return "Стрижка";
+            case BORODA: return "Борода";
             case NONE: return "не выбрано";
-            case BORODA_AND_STRIZKA: return "борода и стрижка";
+            case BORODA_AND_STRIZKA: return "Борода и Стрижка";
             default: return "none";
         }
     }
 
     public static BarberShopServise getServiceOrNull(String text) {
         switch (text) {
-            case "стрижка": return STRIZKA;
-            case "борода": return BORODA;
+            case "Стрижка": return STRIZKA;
+            case "Борода": return BORODA;
             case "не выбрано": return NONE;
-            case "борода и стрижка": return BORODA_AND_STRIZKA;
+            case "Борода и Стрижка": return BORODA_AND_STRIZKA;
             default: return null;
         }
     }
