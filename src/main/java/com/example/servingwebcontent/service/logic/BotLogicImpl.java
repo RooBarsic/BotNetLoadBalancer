@@ -85,14 +85,11 @@ public class BotLogicImpl implements BotLogic {
                 case REQUIRED_ACTION:
                     switch (message) {
                         case "выбор услуги":
-                            response.setMessage("Выберите услугу");
-                            response.addButton(new BotNetButton2(BarberShopServise.BORODA_AND_STRIZKA.toString()));
-                            response.setNewButtonsLine();
-                            response.addButton(new BotNetButton2(BarberShopServise.BORODA.toString()));
-                            response.addButton(new BotNetButton2(BarberShopServise.STRIZKA.toString()));
-                            response.setNewButtonsLine();
+                            response.setMessage("Пожалуйста введите дату посешения салона, в формате dd.mm.yyyy\n" +
+                                    "Например 18.12.2021");
                             response.addButton(new BotNetButton2("HOME"));
-                            user.setStatus(Status.REQUIRED_SERVICE);
+                            response.addButton(new BotNetButton2("HOME"));
+                            user.setStatus(Status.REQUIRED_DATE);
                             break;
                         case "Мои записи":
                             response.setMessage("Ваши записи :\n" + user.getMyActiveOrders());
@@ -115,6 +112,25 @@ public class BotLogicImpl implements BotLogic {
                             response.addButton(new BotNetButton2("Инфо"));
                             user.setStatus(Status.REQUIRED_ACTION);
                             break;
+                    }
+                    break;
+                case REQUIRED_DATE:
+                    if (isCorrectDate(request.getMessage())) {
+                        user.getDefaultOrder().setDate(request.getMessage());
+                        response.setMessage("Выберите услугу");
+                        response.addButton(new BotNetButton2(BarberShopServise.BORODA_AND_STRIZKA.toString()));
+                        response.setNewButtonsLine();
+                        response.addButton(new BotNetButton2(BarberShopServise.BORODA.toString()));
+                        response.addButton(new BotNetButton2(BarberShopServise.STRIZKA.toString()));
+                        response.setNewButtonsLine();
+                        response.addButton(new BotNetButton2("HOME"));
+                        user.setStatus(Status.REQUIRED_SERVICE);
+                    }
+                    else {
+                        response.setMessage("Я вас не понял. Пожалуйста выберите корректную дату в формате dd.mm.yyyy\n" +
+                                "Например 18.12.2021");
+                        response.addButton(new BotNetButton2("HOME"));
+                        user.setStatus(Status.REQUIRED_DATE);
                     }
                     break;
                 case REQUIRED_SERVICE:
@@ -289,6 +305,10 @@ public class BotLogicImpl implements BotLogic {
         String userKey = getUSerKey(request);
         userById.put(userKey, user);
         return user;
+    }
+
+    private boolean isCorrectDate(String date) {
+        return date != null & date.length() > 0;
     }
 
     private String getUSerKey(BotNetRequest request) {

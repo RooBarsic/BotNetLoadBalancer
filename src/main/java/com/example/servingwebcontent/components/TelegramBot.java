@@ -7,6 +7,7 @@ import com.example.api.bots.telegram.TelegramBotResponseSender;
 import com.example.servingwebcontent.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.ApiContextInitializer;
 
 
 
@@ -27,15 +28,14 @@ public class TelegramBot implements BotNetBot {
     TelegramBot(final TokenStorage tokenStorage,
                 final RequestService requestService) {
         System.out.println("##### Starting Telegram bot ....... ");
-//        ApiContextInitializer.init();
-        telegramBotRequestListener = null;
-        telegramBotResponseSender = null;
-//        final String BOT_NAME = tokenStorage.getTokens(BOT_NAME_HANDLE);
-//        final String BOT_TOKEN = tokenStorage.getTokens(BOT_TOKEN_HANDLE);
-//        telegramBotRequestListener = new TelegramBotRequestListener(BOT_NAME, BOT_TOKEN, requestService);
-//        telegramBotRequestListener.botConnect();
-//
-//        telegramBotResponseSender = (TelegramBotResponseSender) telegramBotRequestListener.getBotResponseSender();
+
+        ApiContextInitializer.init();
+        final String BOT_NAME = tokenStorage.getTokens(BOT_NAME_HANDLE);
+        final String BOT_TOKEN = tokenStorage.getTokens(BOT_TOKEN_HANDLE);
+        telegramBotRequestListener = new TelegramBotRequestListener(BOT_NAME, BOT_TOKEN, requestService);
+        telegramBotRequestListener.botConnect();
+
+        telegramBotResponseSender = (TelegramBotResponseSender) telegramBotRequestListener.getBotResponseSender();
 
         System.out.println("##### Telegram bot - started ....... ");
     }

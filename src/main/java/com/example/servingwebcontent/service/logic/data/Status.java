@@ -3,6 +3,7 @@ package com.example.servingwebcontent.service.logic.data;
 public enum Status {
     NEW_USER,
 //    REQUIRED_LOCATION,
+    REQUIRED_DATE, // ввод даты
     REQUIRED_ACTION, //выбор услуги
     REQUIRED_SERVICE, //выбор услуги
     REQUIRED_MASTER,  //выбор мастера
@@ -10,7 +11,8 @@ public enum Status {
     REQUIRED_USER_NAME, //ожидание ИМЕНИ
     REQUIRED_USER_PHONE, //ожидание ТЕЛЕФОНА
     ORDER_COMPLETED, //заказ завершён
-    REQUIRED_ABORT, //ожидание ТЕЛЕФОНА
+    REQUIRED_ABORT,
+    ; //ожидание ТЕЛЕФОНА
 
 
 }
