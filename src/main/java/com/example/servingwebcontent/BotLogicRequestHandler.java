@@ -2,8 +2,6 @@ package com.example.servingwebcontent;
 
 
 import com.example.message.BotNetRequest;
-import com.example.servingwebcontent.service.logic.BotLogic;
-import com.example.servingwebcontent.service.logic2.Card;
 import com.example.servingwebcontent.service.logic2.CardImpl;
 import com.example.servingwebcontent.service.logic2.CardLogicExecutorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +10,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class BotLogicRequestHandler {
 
-    private final BotLogic botLogic;
     private final CardLogicExecutorService cardLogic;
 
     @Autowired
-    BotLogicRequestHandler(final BotLogic botLogic,
-                           final CardLogicExecutorService cardLogic) {
-        this.botLogic = botLogic;
+    BotLogicRequestHandler(final CardLogicExecutorService cardLogic) {
         this.cardLogic = cardLogic;
     }
 
@@ -26,7 +21,6 @@ public class BotLogicRequestHandler {
     @ResponseBody
     public boolean getAllRemainingRequests(@RequestBody BotNetRequest request) {
         return cardLogic.processIncomingRequest(request);
-//        return botLogic.processIncomingRequest(request);
     }
 
     @RequestMapping(value = "/set-card-logic", method = RequestMethod.POST)
@@ -38,7 +32,7 @@ public class BotLogicRequestHandler {
 
     @RequestMapping(value = "/get-root-card-logic", method = RequestMethod.GET)
     @ResponseBody
-    public CardImpl setCardLogic() {
+    public CardImpl getCardLogic() {
         return (CardImpl) cardLogic.getRootLogic();
     }
 
